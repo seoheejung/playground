@@ -18,7 +18,7 @@
 		```
 		[자바인 경우]
 		mvn package
-		java -jar ./target/Shinhanlife-API-0.0.1-SNAPSHOT.war & 
+		java -jar ./target/123123131-API-0.0.1-SNAPSHOT.war & 
 		```
 ---
 ### 🚀 도커 이미지 빌드 방법
@@ -27,16 +27,16 @@
 * 장점
 	* 서버에서 오류가 났을 시 이전 버전으로 빨리 복구 가능
 * 도커 이미지를 만들자마자 우리 서버로 올리는 명령어
-	1. docker login registry-gitlab.anypot.co.kr 
-		- 우리 회사만 쓰는 도커허브에 로그인
-	2. docker buildx build --platform linux/amd64 --push --tag registry-gitlab.anypot.co.kr/aispot/backendserver:1.0.3.1 .
+	1. docker login registry-gitlab.00000.co.kr 
+		- 도커허브에 로그인
+	2. docker buildx build --platform linux/amd64 --push --tag registry-gitlab.00000.co.kr/1231231/backendserver:1.0.3.1 .
 		- 도커 upload (env 파일 체크! env.prod 내용 복붙)
 		- buildx << 맥에서 빌드 시 중요!
 	3. docker-compose.yml 파일 변경 작업
 		```
 		services:
 		sd-backend:
-			image: registry-gitlab.anypot.co.kr/aispot/backendserver:1.0.3.1
+			image: registry-gitlab.00000.co.kr/1231231/backendserver:1.0.3.1
 		```
 	4. docker-compose up -d
 		- docker-compose.yml 파일 실행
