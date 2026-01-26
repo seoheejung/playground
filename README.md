@@ -1,21 +1,5 @@
 # playground
 
-## Repository Info
-- 서비스 배포 방법 정리
-- 운영 환경을 고려한 배포 전략 및 기준 문서
-
----
-<br>
-
-## Project
-### Carrer
-- 회사 근무 시  작업했던 업무 정리
-### Study
-- 개인 공부 정리
-
----
-<br>
-
 ## Portfolio
 ### 1. 2017 | Database Architecture & Design
 > "데이터 구조의 본질을 꿰뚫는 설계로 효율적인 백엔드 아키텍처 구축"
@@ -44,3 +28,19 @@
 - 파콤 재직 중 수행한 실시간 모니터링 시스템 고도화 프로젝트
 - 실시간 데이터 처리 최적화, 동시성 제어 및 고가용성 서버 운영 관점 반영
 - `Spring Boot`, `DataBase`, `Real-time`, `Concurrency`, `Optimization`, `Linux`
+
+---
+<br>
+
+## Repository Info
+- 서비스 배포 방법 정리
+- 운영 환경을 고려한 배포 전략 및 기준 문서
+
+---
+<br>
+
+## Project
+### Carrer
+- 회사 근무 시  작업했던 업무 정리
+### Study
+- 개인 공부 정리
