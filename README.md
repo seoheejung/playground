@@ -29,6 +29,17 @@
 - 실시간 데이터 처리 최적화, 동시성 제어 및 고가용성 서버 운영 관점 반영
 - `Spring Boot`, `DataBase`, `Real-time`, `Concurrency`, `Optimization`, `Linux`
 
+### 5. 2026 | Cloud Infrastructure & Backend Resilience
+> "대규모 트래픽 상황에서도 안정적으로 동작하는 백엔드 서비스 보호 구조 실험"
+
+- KT Cloud 교육 과정 중 수행한 Guardian Cloud Project
+- GCP 환경에서 동작하는 Service A 백엔드 기능 구현 및 부하 시나리오 설계
+- Redis 캐싱, HikariCP, PostgreSQL 기반 데이터 처리 구조 설계
+- RateLimit(Bucket4j), CircuitBreaker(Resilience4j) 기반 서비스 보호 로직 구현
+- JMeter 기반 대규모 트래픽 테스트로 서비스 안정성 검증
+- Spring Boot 애플리케이션 Dockerfile 작성 및 컨테이너 이미지 빌드 환경 구성
+- `Spring Boot`, `Redis`, `PostgreSQL`, `Bucket4j`, `Resilience4j`, `JMeter`, `docker`, `GCP`
+
 ---
 <br>
 
