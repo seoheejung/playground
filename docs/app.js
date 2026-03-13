@@ -33,10 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 projectList.appendChild(btn);
 
-                renderEmpty();
-
             });
-
+            renderEmpty();
         });
 
     function renderEmpty() {

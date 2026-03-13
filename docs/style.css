@@ -83,7 +83,7 @@ main{
 
     display:flex;
     flex-direction:column;
-
+    position:relative;
     overflow:hidden;
 }
 
@@ -188,14 +188,17 @@ main{
     backdrop-filter:blur(4px);
 
     transition:opacity .25s ease, transform .15s ease;
+
+    z-index:10;
+    opacity:.6;
 }
 
 .nav-btn:hover{
     transform:translateY(-50%) scale(1.05);
 }
 
-.left{ left:30px; }
-.right{ right:30px; }
+.left{ left:12px; }
+.right{ right:12px; }
 
 /* Empty state */
 
