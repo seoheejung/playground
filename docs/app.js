@@ -79,7 +79,10 @@ function renderPage() {
 
     slider.innerHTML = "";
 
-    if (!images || images.length === 0) return;
+    if (!images.length) {
+        pageIndicator.textContent = "0 / 0";
+        return;
+    }
 
     const src = images[currentPage - 1];
 
@@ -89,9 +92,17 @@ function renderPage() {
     const img = document.createElement("img");
 
     img.loading = "lazy";
+
+    img.onload = () => {
+        pageDiv.appendChild(img);
+    };
+
+    img.onerror = () => {
+        pageDiv.innerHTML = "<div style='color:#aaa;padding:40px'>Image load failed</div>";
+    };
+
     img.src = src;
 
-    pageDiv.appendChild(img);
     slider.appendChild(pageDiv);
 }
 
