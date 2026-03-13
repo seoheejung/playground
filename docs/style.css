@@ -1,175 +1,290 @@
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: system-ui;
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
 
-    background:
-        radial-gradient(circle at 50% -20%, rgba(255,255,255,0.25), transparent 45%),
-        radial-gradient(circle at 20% 25%, rgba(255,255,255,0.12), transparent 40%),
-        radial-gradient(circle at 85% 30%, rgba(255,255,255,0.10), transparent 45%),
-        linear-gradient(135deg, #7e6bd6 0%, #a792e3 40%, #bfa9ec 100%);
-}
-
-.pdf-list {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-
-    padding: 16px;
-}
-
-.pdf-btn {
-
-    padding: 10px 18px;
-
-    border-radius: 12px;
-
-    border: 1px solid rgba(255,255,255,0.25);
-
-    background: linear-gradient(
-        rgba(255,255,255,0.15),
-        rgba(255,255,255,0.05)
+    background:linear-gradient(
+        180deg,
+        #f7f6f4 0%,
+        #eceae7 100%
     );
+}
 
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+/* 상단 프로젝트 버튼 영역 */
 
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
+.pdf-list{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    padding:18px;
+}
 
-    cursor: pointer;
+/* 프로젝트 버튼 */
 
-    white-space: nowrap;
-    max-width: 240px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.pdf-btn{
 
-    transition: all 0.25s ease;
+    padding:10px 18px;
+    border-radius:10px;
+
+    border:1px solid #e2e2e2;
+
+    background:#ffffff;
+
+    color:#2f2f2f;
+    font-size:14px;
+    font-weight:500;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+    max-width:240px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    transition:all .2s ease;
+
+    box-shadow:0 2px 6px rgba(0,0,0,0.04);
+}
+
+.pdf-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+
+.pdf-btn.active{
+    background:#f3f4f6;
+    border:1px solid #d9d9d9;
+}
+
+/* 메인 영역 */
+
+main{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+/* Viewer 카드 */
+
+.viewer{
+    width:85%;
+    height:90vh;
+
+    background:#ffffff;
+
+    border-radius:16px;
 
     box-shadow:
-        0 8px 20px rgba(0,0,0,0.15),
-        inset 0 1px 1px rgba(255,255,255,0.3);
+        0 10px 35px rgba(0,0,0,0.12);
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
 }
 
-.pdf-btn:hover {
+/* Viewer header */
 
-    transform: translateY(-2px);
-
-    background: linear-gradient(
-        rgba(255,255,255,0.25),
-        rgba(255,255,255,0.08)
-    );
-
+.viewer-header{
+    display:flex;
+    align-items:center;
+    padding:14px 20px;
+    border-bottom:1px solid #efefef;
 }
 
-.pdf-btn.active {
-
-    background: linear-gradient(
-        rgba(255,255,255,0.35),
-        rgba(255,255,255,0.12)
-    );
-
-    border: 1px solid rgba(255,255,255,0.4);
-
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    margin-right:8px;
 }
 
-main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.red{ background:#ff5f56; }
+.yellow{ background:#ffbd2e; }
+.green{ background:#27c93f; }
+
+.viewer-title{
+    margin-left:20px;
+    color:#7a7a7a;
+    font-size:14px;
 }
 
-.viewer {
-    width: 85%;
-    height: 90vh;
-    background: #2b2b3c;
-    border-radius: 18px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+/* Slider */
 
-    display: flex;
-    flex-direction: column;
+#slider{
+    display:flex;
+    overflow:hidden;
 
-    overflow: hidden;
+    height:calc(100% - 60px);
+
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+
+    position:relative;
 }
 
-.viewer-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 20px;
+/* 페이지 */
+
+.page{
+    flex:0 0 100%;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:clamp(20px,4vw,60px);
+
+    background:#f6f6f6;
+
+    overflow:hidden;
+
+    box-sizing:border-box;
 }
 
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 8px;
+.page img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:4px;
+    object-fit:contain;
+
+    box-shadow:0 8px 30px rgba(0,0,0,0.15);
 }
 
-.red { background:#ff5f56; }
-.yellow { background:#ffbd2e; }
-.green { background:#27c93f; }
+/* 페이지 번호 */
 
-.viewer-title {
-    margin-left: 20px;
-    color: #bcbcbc;
+.page-indicator{
+    text-align:center;
+    padding:8px;
+    color:#9b9b9b;
+    font-size:13px;
 }
 
-#slider {
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
+/* 네비 버튼 */
 
-    height: calc(100% - 60px); /* header 제외 */
+.nav-btn{
 
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+
+    width:56px;
+    height:56px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(0,0,0,0.35);
+
+    color:white;
+    font-size:30px;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(4px);
+
+    transition:opacity .25s ease, transform .15s ease;
 }
 
-.page {
-    flex: 0 0 100%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    overflow: hidden;
+.nav-btn:hover{
+    transform:translateY(-50%) scale(1.05);
 }
 
-.page img {
-    max-width: 100%;
-    max-height: 100%;
+.left{ left:30px; }
+.right{ right:30px; }
 
-    width: auto;
-    height: auto;
+/* Empty state */
 
-    object-fit: contain;
+.empty-state{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:16px;
 }
 
-.page-indicator {
-    text-align: center;
-    padding: 8px;
-    color: #cfcfcf;
+.empty-icon{
+    font-size:60px;
+    opacity:.7;
 }
 
-.nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.4);
-    color: white;
-    font-size: 34px;
-    cursor: pointer;
+.empty-title{
+    font-size:22px;
+    font-weight:600;
+    color:#5f5f5f;
 }
 
-.left { left:30px; }
-.right { right:30px; }
+.empty-desc{
+    font-size:14px;
+    color:#9b9b9b;
+}
+
+/* 화살표 초기 숨김 */
+
+body:not(.viewer-active) .nav-btn{
+    opacity:0;
+    pointer-events:none;
+}
+
+body.viewer-active .nav-btn{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* 애니메이션 */
+
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+.loader{
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+    border:4px solid #ddd;
+    border-top-color:#666;
+
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{ transform:rotate(360deg); }
+}
+
+.zoom-controls{
+    margin-left:auto;
+    display:flex;
+    gap:8px;
+}
+
+.zoom-controls button{
+    width:28px;
+    height:28px;
+
+    border-radius:6px;
+    border:1px solid #ddd;
+
+    background:#fff;
+
+    font-size:16px;
+    cursor:pointer;
+}
+
+.zoom-controls button:hover{
+    background:#f3f3f3;
+}
+
+.page img{
+    transition: transform 0.15s ease;
+}
