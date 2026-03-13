@@ -122,4 +122,20 @@ document.getElementById("prevBtn").onclick = () => {
     updatePageIndicator();
 };
 
+document.addEventListener("keydown", (e) => {
+
+    if (["ArrowLeft","ArrowRight"].includes(e.key)) {
+        e.preventDefault();
+    }
+
+    if (e.key === "ArrowRight") {
+        document.getElementById("nextBtn").click();
+    }
+
+    if (e.key === "ArrowLeft") {
+        document.getElementById("prevBtn").click();
+    }
+
+});
+
 });
