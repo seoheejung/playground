@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const projectList = document.getElementById("projectList");
 const slider = document.getElementById("slider");
 const viewerTitle = document.getElementById("viewerTitle");
@@ -20,7 +22,6 @@ fetch("project-list.json", { cache: "no-store" })
 
             btn.onclick = () => {
 
-                // active 버튼 갱신
                 document.querySelectorAll(".pdf-btn")
                     .forEach(b => b.classList.remove("active"));
 
@@ -40,7 +41,6 @@ fetch("project-list.json", { cache: "no-store" })
 
     });
 
-
 async function loadProject(project) {
 
     slider.innerHTML = "";
@@ -58,12 +58,10 @@ async function loadProject(project) {
     updatePageIndicator();
 }
 
-
 function loadImages(path, pages) {
 
     const images = [];
-
-    const cacheBuster = Date.now(); // 캐시 방지
+    const cacheBuster = Date.now();
 
     for (let i = 1; i <= pages; i++) {
 
@@ -103,28 +101,25 @@ function renderPage() {
 }
 
 function updatePageIndicator() {
-
     pageIndicator.textContent = `${currentPage} / ${totalPages}`;
 }
-
 
 document.getElementById("nextBtn").onclick = () => {
 
     if (currentPage >= totalPages) return;
 
     currentPage++;
-
     renderPage();
     updatePageIndicator();
 };
-
 
 document.getElementById("prevBtn").onclick = () => {
 
     if (currentPage <= 1) return;
 
     currentPage--;
-
     renderPage();
     updatePageIndicator();
 };
+
+});
