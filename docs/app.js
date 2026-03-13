@@ -6,6 +6,7 @@ const pageIndicator = document.getElementById("pageIndicator");
 let currentPage = 1;
 let totalPages = 0;
 let pageWidth = 0;
+let images = [];
 
 fetch("project-list.json", { cache: "no-store" })
     .then(res => res.json())
@@ -77,6 +78,8 @@ function loadImages(path, pages) {
 function renderPage() {
 
     slider.innerHTML = "";
+
+    if (!images || images.length === 0) return;
 
     const src = images[currentPage - 1];
 
