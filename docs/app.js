@@ -45,7 +45,7 @@ async function loadProject(project) {
     slider.innerHTML = "";
     viewerTitle.textContent = project.title;
 
-    const images = await loadImages(project.path);
+    const images = loadImages(project.path, project.pages);
 
     totalPages = images.length;
     currentPage = 1;
@@ -69,20 +69,15 @@ async function loadProject(project) {
 }
 
 
-async function loadImages(path) {
+function loadImages(path, pages) {
 
     const images = [];
 
-    for (let i = 1; i <= 300; i++) {
+    for (let i = 1; i <= pages; i++) {
 
         const num = String(i).padStart(3, "0");
-        const file = `${path}/${num}.jpg`;
 
-        const exists = await imageExists(file);
-
-        if (!exists) break;
-
-        images.push(file);
+        images.push(`${path}/${num}.jpg`);
     }
 
     return images;

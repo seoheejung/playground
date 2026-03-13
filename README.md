@@ -15,7 +15,7 @@
 ### Portfolio Viewer
 > 웹 슬라이드 형태로 포트폴리오를 확인할 수 있습니다.
 
-👉 **[Open Portfolio](./docs/index.html)**
+👉 **[Open Portfolio](https://seoheejung.github.io/playground/)**
 
 ### 1. 2017 | Database Architecture & Design
 > "데이터 구조의 본질을 꿰뚫는 설계로 효율적인 백엔드 아키텍처 구축"
