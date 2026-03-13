@@ -92,17 +92,13 @@ function renderPage() {
     const img = document.createElement("img");
 
     img.loading = "lazy";
-
-    img.onload = () => {
-        pageDiv.appendChild(img);
-    };
+    img.src = src;
 
     img.onerror = () => {
         pageDiv.innerHTML = "<div style='color:#aaa;padding:40px'>Image load failed</div>";
     };
 
-    img.src = src;
-
+    pageDiv.appendChild(img);
     slider.appendChild(pageDiv);
 }
 
