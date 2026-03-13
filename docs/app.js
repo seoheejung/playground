@@ -7,7 +7,7 @@ let currentPage = 1;
 let totalPages = 0;
 let pageWidth = 0;
 
-fetch("project-list.json")
+fetch("project-list.json", { cache: "no-store" })
     .then(res => res.json())
     .then(projects => {
 
@@ -45,23 +45,12 @@ async function loadProject(project) {
     slider.innerHTML = "";
     viewerTitle.textContent = project.title;
 
-    const images = loadImages(project.path, project.pages);
+    images = loadImages(project.path, project.pages);
 
     totalPages = images.length;
     currentPage = 1;
 
-    images.forEach(src => {
-
-        const pageDiv = document.createElement("div");
-        pageDiv.className = "page";
-
-        const img = document.createElement("img");
-        img.src = src;
-
-        pageDiv.appendChild(img);
-        slider.appendChild(pageDiv);
-
-    });
+    renderPage();
 
     pageWidth = slider.clientWidth;
 
@@ -73,31 +62,35 @@ function loadImages(path, pages) {
 
     const images = [];
 
+    const cacheBuster = Date.now(); // 캐시 방지
+
     for (let i = 1; i <= pages; i++) {
 
         const num = String(i).padStart(3, "0");
 
-        images.push(`${path}/${num}.jpg`);
+        images.push(`${path}/${num}.jpg?v=${cacheBuster}`);
     }
 
     return images;
 }
 
+function renderPage() {
 
-function imageExists(url) {
+    slider.innerHTML = "";
 
-    return new Promise(resolve => {
+    const src = images[currentPage - 1];
 
-        const img = new Image();
+    const pageDiv = document.createElement("div");
+    pageDiv.className = "page";
 
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
+    const img = document.createElement("img");
 
-        img.src = url;
+    img.loading = "lazy";
+    img.src = src;
 
-    });
+    pageDiv.appendChild(img);
+    slider.appendChild(pageDiv);
 }
-
 
 function updatePageIndicator() {
 
@@ -109,12 +102,9 @@ document.getElementById("nextBtn").onclick = () => {
 
     if (currentPage >= totalPages) return;
 
-    slider.scrollBy({
-        left: pageWidth,
-        behavior: "smooth"
-    });
-
     currentPage++;
+
+    renderPage();
     updatePageIndicator();
 };
 
@@ -123,11 +113,8 @@ document.getElementById("prevBtn").onclick = () => {
 
     if (currentPage <= 1) return;
 
-    slider.scrollBy({
-        left: -pageWidth,
-        behavior: "smooth"
-    });
-
     currentPage--;
+
+    renderPage();
     updatePageIndicator();
 };
