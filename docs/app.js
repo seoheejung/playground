@@ -91,6 +91,25 @@ document.addEventListener("DOMContentLoaded", () => {
         return images;
     }
 
+    // 전역 변수 위치 확인
+    let is2026Project = false; 
+
+    async function loadProject(project) {
+        document.body.classList.add("viewer-active");
+        slider.innerHTML = "";
+        viewerTitle.textContent = project.title;
+
+        // 경로(pdf/2026)를 기준으로 판별
+        is2026Project = project.path.includes("2026");
+
+        images = loadImages(project.path, project.pages);
+        totalPages = images.length;
+        currentPage = 1;
+
+        renderPage();
+        updatePageIndicator();
+    }
+
     function renderPage() {
 
         slider.innerHTML = "";
@@ -120,11 +139,24 @@ document.addEventListener("DOMContentLoaded", () => {
         img.onload = () => {
             pageDiv.innerHTML = "";
             pageDiv.appendChild(img);
+
+            // 마지막 페이지이고 2026 프로젝트일 때만 'slider' 바로 아래에 추가
+            if (currentPage === totalPages && is2026Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://github.com/exit8-ktcloud/self-managed-infrastructure" target="_blank" style="color: #0366d6;">📁 Github</a>
+                        <a href="https://youtu.be/EUB7CBObaXs" target="_blank" style="color: #d32f2f;">🎬 Demo</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
         };
 
         img.onerror = () => {
-            pageDiv.innerHTML =
-                "<div style='color:#aaa;padding:40px'>Image load failed</div>";
+            pageDiv.innerHTML = "<div style='color:#aaa;padding:40px'>Image load failed</div>";
         };
 
         /* 다음 페이지 프리로드 */
