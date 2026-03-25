@@ -56,6 +56,10 @@
 - Spring Boot 애플리케이션 Dockerfile 작성 및 컨테이너 이미지 빌드 환경 구성
 - `Spring Boot`, `Redis`, `PostgreSQL`, `Bucket4j`, `Resilience4j`, `JMeter`, `docker`, `GCP`
 
+#### 🔗 Project Resources
+- [Github Repository](https://github.com/exit8-ktcloud/self-managed-infrastructure)
+- [Demo Video](https://youtu.be/EUB7CBObaXs)
+
 ---
 <br>
 
