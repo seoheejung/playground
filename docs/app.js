@@ -92,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 전역 변수 위치 확인
-    let is2026Project = false; 
+    let is2026_1Project = false; 
+    let is2026_2Project = false; 
 
     async function loadProject(project) {
         document.body.classList.add("viewer-active");
@@ -100,7 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
         viewerTitle.textContent = project.title;
 
         // 경로(pdf/2026)를 기준으로 판별
-        is2026Project = project.path.includes("2026");
+        is2026_1Project = project.path.includes("2026_1");
+        is2026_2Project = project.path.includes("2026_2");
 
         images = loadImages(project.path, project.pages);
         totalPages = images.length;
@@ -140,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
             pageDiv.innerHTML = "";
             pageDiv.appendChild(img);
 
-            // 마지막 페이지이고 2026 프로젝트일 때만 'slider' 바로 아래에 추가
-            if (currentPage === totalPages && is2026Project) {
+            // 마지막 페이지이고 2026_1 프로젝트일 때만 'slider' 바로 아래에 추가
+            if (currentPage === totalPages && is2026_1Project) {
                 const resourceBox = document.createElement("div");
                 resourceBox.className = "resource-box";
                 resourceBox.innerHTML = `
@@ -149,6 +151,67 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>
                         <a href="https://github.com/exit8-ktcloud/self-managed-infrastructure" target="_blank" style="color: #0366d6;">📁 Github</a>
                         <a href="https://youtu.be/EUB7CBObaXs" target="_blank" style="color: #d32f2f;">🎬 Demo</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
+
+            // 마지막 페이지이고 2026_2 프로젝트일 때만 'slider' 바로 아래에 추가
+            if (currentPage === totalPages && is2026_2Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://app.notion.com/p/SEO-585550ea881b4f2eb8f110b0b27af2be" target="_blank" style="color: #0366d6;">📁 Notion</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
+
+            if (currentPage === 3 && is2026_2Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://github.com/seoheejung/server-monitor" target="_blank" style="color: #0366d6;">📁 Github</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
+
+            if (currentPage === 9 && is2026_2Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://github.com/seoheejung/circuit-breaker-tester" target="_blank" style="color: #0366d6;">📁 Github</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
+
+            if (currentPage === 14 && is2026_2Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://github.com/seoheejung/k6-realtime-metrics-pipeline" target="_blank" style="color: #0366d6;">📁 Github</a>
+                    </div>
+                `;
+                slider.appendChild(resourceBox);
+            }
+
+            if (currentPage === 19 && is2026_2Project) {
+                const resourceBox = document.createElement("div");
+                resourceBox.className = "resource-box";
+                resourceBox.innerHTML = `
+                    <p>🔗 Project Resources</p>
+                    <div>
+                        <a href="https://github.com/seoheejung/self-hosted-devops-platform" target="_blank" style="color: #0366d6;">📁 Github</a>
                     </div>
                 `;
                 slider.appendChild(resourceBox);

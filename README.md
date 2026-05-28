@@ -56,6 +56,14 @@
 - Spring Boot 애플리케이션 Dockerfile 작성 및 컨테이너 이미지 빌드 환경 구성
 - `Spring Boot`, `Redis`, `PostgreSQL`, `Bucket4j`, `Resilience4j`, `JMeter`, `docker`, `GCP`
 
+### 6. 2026 | Backend DevOps Observability Portfolio
+> "직접 구현하고 검증하며 시스템을 이해한 백엔드·DevOps·관측 가능성 포트폴리오"
+
+- OS 환경 차이 검증, 부하 테스트, 실시간 메트릭 파이프라인, Self-Hosted DevOps 인프라를 묶은 종합 포트폴리오
+- Server Monitor, Circuit Breaker Tester, k6 Realtime Metrics Pipeline, Self-Hosted DevOps Platform 4개 프로젝트 구성
+- 단계별 이식 검증, 장애 대응 구조 실험, Kafka 기반 메트릭 파이프라인 병목 개선, 온프레미스 CI/CD 운영 흐름 검증
+- `FastAPI`, `Spring Boot`, `Kotlin`, `k6`, `Kafka`, `InfluxDB`, `Grafana`, `GitLab`, `Docker Compose`, `GitHub Actions`, `GitLab Runner`, `Nginx`
+
 #### 🔗 Project Resources
 - [Github Repository](https://github.com/exit8-ktcloud/self-managed-infrastructure)
 - [Demo Video](https://youtu.be/EUB7CBObaXs)
