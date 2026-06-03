@@ -69,6 +69,8 @@
 - 단계별 이식 검증, 장애 대응 구조 실험, Kafka 기반 메트릭 파이프라인 병목 개선, 온프레미스 CI/CD 운영 흐름 검증
 - `FastAPI`, `Spring Boot`, `Kotlin`, `k6`, `Kafka`, `InfluxDB`, `Grafana`, `GitLab`, `Docker Compose`, `GitHub Actions`, `GitLab Runner`, `Nginx`
 
+#### 🔗 Project Resources
+- [Code Review](https://seoheejung.github.io/playground/2026-backend-devops-observability-code-review.html)
 
 ---
 <br>
