@@ -5,7 +5,6 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Project Showcase &amp; Code Review</title>
-
 <link as_="style" crossorigin="anonymous" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/><style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -806,15 +805,239 @@ html, body {
   }
 }
 
+
+
+/* v9 top navigation target fix */
+#projects,
+#summary,
+.review-section {
+  scroll-margin-top: 72px;
+}
+
+
+/* ─────────────────────────────────────────────
+   v11 summary visual redesign
+   Replace long bullet lists with project cards, lanes, and pattern cards
+───────────────────────────────────────────── */
+#summary {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+.summary-stats {
+  margin-bottom: 18px;
+}
+
+.summary-section {
+  background: linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.summary-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.summary-heading span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.summary-heading h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.02em;
+  margin: 0;
+}
+
+.summary-project-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.summary-project-card,
+.improvement-lane,
+.pattern-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,.028);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.summary-project-card::before,
+.improvement-lane::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--lane-color);
+}
+
+.summary-project-card.server,
+.improvement-lane.server { --lane-color: var(--project-server); }
+.summary-project-card.cb,
+.improvement-lane.cb { --lane-color: var(--project-cb); }
+.summary-project-card.k6,
+.improvement-lane.k6 { --lane-color: var(--project-k6); }
+.summary-project-card.devops,
+.improvement-lane.devops { --lane-color: var(--project-devops); }
+
+.summary-project-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.summary-project-title span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--lane-color);
+  border: 1px solid color-mix(in srgb, var(--lane-color) 55%, transparent);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.summary-project-title h4,
+.improvement-lane h4,
+.pattern-card h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+
+.summary-project-card ul,
+.improvement-lane ul,
+.pattern-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.summary-project-card li,
+.improvement-lane li,
+.pattern-card li {
+  position: relative;
+  padding-left: 13px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.summary-project-card li::before,
+.improvement-lane li::before,
+.pattern-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .72em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--lane-color, var(--muted));
+}
+
+.improvement-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pattern-card {
+  padding-top: 42px;
+}
+
+.pattern-card:nth-child(1) { --lane-color: var(--project-cb); }
+.pattern-card:nth-child(2) { --lane-color: var(--project-server); }
+.pattern-card:nth-child(3) { --lane-color: var(--project-k6); }
+
+.pattern-num {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--lane-color) 75%, transparent);
+  opacity: .8;
+}
+
+.pattern-card h4 {
+  color: var(--lane-color);
+  margin-bottom: 8px;
+}
+
+.pattern-card p {
+  color: #d7d3df;
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 0 0 12px;
+}
+
+@media (max-width: 1180px) {
+  .summary-project-grid,
+  .improvement-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  #summary {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .summary-heading {
+    display: block;
+  }
+
+  .summary-heading span {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .summary-project-grid,
+  .improvement-board {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
 <nav>
 <span class="nav-logo">$ project --showcase</span>
 <ul class="nav-links">
-<li><a class="active" href="#projects">Projects</a></li>
-<li><a href="#review">Code Review</a></li>
-<li><a href="#summary">Summary</a></li>
+<li><a class="active" data-nav="projects" href="#projects">Projects</a></li>
+<li><a data-nav="review" href="#review">Code Review</a></li>
+<li><a data-nav="summary" href="#summary">Summary</a></li>
 </ul>
 </nav>
 <!-- ── HERO ── -->
@@ -840,10 +1063,6 @@ html, body {
 <p class="section-label">04 Projects</p>
 <!-- TABS -->
 <div class="proj-tabs">
-
-
-
-
 <button class="proj-tab active" onclick="switchTab(0)">
 <span class="tab-num">01 / Python · FastAPI</span>
 <span class="tab-name">Server Monitor<br/>Dashboard</span>
@@ -969,7 +1188,7 @@ CACHED_KNOWN_PROCS = temp_map</div>
 <span class="fn">sync_with_mongodb</span>(local_data, OS_TYPE)</div>
 </div>
 </div>
-<div class="full-card" style="margin-top:0;">
+<div class="full-card review-section" style="margin-top:0;">
 <div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
 <div class="review-block">
 <div class="review-item open">
@@ -1175,7 +1394,7 @@ app = <span class="cls">FastAPI</span>(lifespan=lifespan)</div>
 </div>
 </div>
 <!-- Code Review Section -->
-<div class="full-card" id="review" style="margin-top:1rem;">
+<div class="full-card review-section" style="margin-top:1rem;">
 <div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
 <div class="review-block">
 <div class="review-item open">
@@ -1380,7 +1599,7 @@ message.<span class="fn">contains</span>(<span class="str">"CIRCUIT_OPEN"</span>
 }</div>
 </div>
 </div>
-<div class="full-card" style="margin-top:0;">
+<div class="full-card review-section" style="margin-top:0;">
 <div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
 <div class="review-block">
 <div class="review-item open">
@@ -1567,7 +1786,7 @@ message.<span class="fn">contains</span>(<span class="str">"CIRCUIT_OPEN"</span>
     - <span class="fn">test</span> -f infra/compose/docker-compose.gitlab.yml</div>
 </div>
 </div>
-<div class="full-card" style="margin-top:0;">
+<div class="full-card review-section" style="margin-top:0;">
 <div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰 (인프라 / 설정 파일 기준)</div>
 <div class="review-block">
 <div class="review-item open">
@@ -1654,74 +1873,149 @@ message.<span class="fn">contains</span>(<span class="str">"CIRCUIT_OPEN"</span>
 </main>
 <!-- ── SUMMARY ── -->
 <section id="summary" style="max-width:1280px; margin:0 auto; padding:2rem 2rem 4rem;">
-<p class="section-label">Cross-Project Summary</p>
-<div class="stats-row">
+<p class="section-label">Cross-Project Review Summary</p>
+<div class="stats-row summary-stats">
 <div class="stat-card">
-<span class="stat-num" style="color:var(--accent2)">4</span>
+<span class="stat-num" style="color:var(--project-server)">4</span>
 <span class="stat-label">Projects Reviewed</span>
 </div>
 <div class="stat-card">
-<span class="stat-num" style="color:var(--accent1)">3</span>
+<span class="stat-num" style="color:var(--project-cb)">3</span>
 <span class="stat-label">Languages</span>
 </div>
 <div class="stat-card">
-<span class="stat-num" style="color:var(--accent4)">12</span>
+<span class="stat-num" style="color:var(--project-k6)">12</span>
 <span class="stat-label">Strengths · 잘된 점</span>
 </div>
 <div class="stat-card">
-<span class="stat-num" style="color:var(--accent3)">11</span>
+<span class="stat-num" style="color:var(--project-devops)">11</span>
 <span class="stat-label">Improvements · 개선 포인트</span>
 </div>
 </div>
-<div class="content-grid">
-<div class="card">
-<div class="card-title"><span class="card-title-dot dot-bar-green"></span>공통 강점</div>
-<ul class="review-list">
-<li><span class="li-bullet"></span><span><span>관측성(Observability) 일관 적용</span> — trace_id, Prometheus 메트릭, structured log를 모든 프로젝트에서 설계 단계부터 고려</span></li>
-<li><span class="li-bullet"></span><span><span>실패 격리 패턴 숙지</span> — CircuitBreaker, at-least-once Kafka commit, MongoDB fallback, Dead-letter 등 장애를 조용히 삼키지 않는 구조</span></li>
-<li><span class="li-bullet"></span><span><span>보안 외부화 일관성</span> — Vault KV, GitHub Secrets, Ansible Vault로 하드코딩 없이 자격증명 관리</span></li>
-<li><span class="li-bullet"></span><span><span>Lock-free / 동시성 의식</span> — CAS 기반 AtomicBoolean, Caffeine 캐시, ConcurrentLinkedDeque 등 동시성 자료구조 적절 활용</span></li>
-<li><span class="li-bullet"></span><span><span>문서화 수준</span> — README + 별도 docs/ 구조, 아키텍처 다이어그램, 불변식 명시 등 재현 가능한 문서화</span></li>
+<div class="summary-section">
+<div class="summary-heading">
+<span>Strengths</span>
+<h3>프로젝트별로 드러난 강점</h3>
+</div>
+<div class="summary-project-grid">
+<article class="summary-project-card cb">
+<div class="summary-project-title">
+<span>02</span>
+<h4>Circuit Breaker</h4>
+</div>
+<ul>
+<li>trace_id, AOP LogAspect, Prometheus Metrics로 요청 흐름과 장애 상태 추적</li>
+<li>RuntimeFeatureState의 AtomicBoolean CAS 토글로 런타임 기능 제어 안정성 확보</li>
 </ul>
+</article>
+<article class="summary-project-card k6">
+<div class="summary-project-title">
+<span>03</span>
+<h4>k6 Pipeline</h4>
 </div>
-<div class="card">
-<div class="card-title"><span class="card-title-dot dot-bar-yellow"></span>공통 개선 포인트</div>
-<ul class="review-list">
-<li><span class="li-bullet"></span><span><span>설계 문서 ↔ 실제 코드 불일치</span> — 2-Tier 캐시 미완성, kafka_lag = 0, 빈 compose 파일 등 README와 코드 간 갭 존재</span></li>
-<li><span class="li-bullet"></span><span><span>Blocking retry</span> — Kotlin Collector의 <code style="font-family:var(--mono);font-size:11px;background:var(--surface3);padding:1px 5px;border-radius:3px;">Thread.sleep</code> 기반 retry는 Kafka consume loop를 최대 7초 차단할 수 있음</span></li>
-<li><span class="li-bullet"></span><span><span>Worker thread 점유</span> — FastAPI sync endpoint 내 <code style="font-family:var(--mono);font-size:11px;background:var(--surface3);padding:1px 5px;border-radius:3px;">time.sleep(0.1)</code>이 동시 요청 증가 시 threadpool 소진으로 이어질 수 있음</span></li>
-<li><span class="li-bullet"></span><span><span>테스트 코드 부재</span> — 4개 프로젝트 모두 비즈니스 로직 단위 테스트 없거나 ApplicationTests만 존재. LogLevelPolicy, analyze_process 등 순수 함수 구조임에도 미작성</span></li>
+<ul>
+<li>Kafka offset commit을 write 성공 이후로 미뤄 at-least-once 처리 흐름 구성</li>
+<li>Dead-letter, retry, batch flush, Shutdown Hook으로 수집 파이프라인 실패 격리</li>
 </ul>
+</article>
+<article class="summary-project-card server">
+<div class="summary-project-title">
+<span>01</span>
+<h4>Server Monitor</h4>
 </div>
-</div>
-<!-- 공통 개선 패턴 -->
-<div class="full-card" style="margin-top:12px;">
-<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>공통 개선 패턴 — 3가지 축</div>
-<div class="content-grid three" style="margin-top:0.5rem; margin-bottom:0;">
-<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
-<div style="font-family:var(--mono); font-size:10px; color:var(--accent1); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 01 · 문서 ↔ 코드 일치</div>
-<ul class="review-list" style="font-size:12px;">
-<li><span class="li-bullet"></span><span>CB — CacheConfig: @Primary Redis만 동작, Caffeine L1 미완성</span></li>
-<li><span class="li-bullet"></span><span>k6 — kafkaLag = 0 placeholder, 실제 수집 미연결</span></li>
-<li><span class="li-bullet"></span><span>DevOps — docker-compose.full.yml 0 bytes 미사용</span></li>
+<ul>
+<li>MongoDB 장애 시 로컬 JSON fallback으로 앱 기동 안정성 확보</li>
+<li>psutil 기반 실시간 재수집과 4단계 종료 가드로 프로세스 종료 안전성 강화</li>
 </ul>
+</article>
+<article class="summary-project-card devops">
+<div class="summary-project-title">
+<span>04</span>
+<h4>Self-Hosted DevOps</h4>
 </div>
-<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
-<div style="font-family:var(--mono); font-size:10px; color:var(--accent2); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 02 · 운영 재현성 강화</div>
-<ul class="review-list" style="font-size:12px;">
-<li><span class="li-bullet"></span><span>DevOps — Monitoring image tag latest → 버전 고정 필요</span></li>
-<li><span class="li-bullet"></span><span>Server Monitor — on_event deprecated → lifespan 전환</span></li>
-<li><span class="li-bullet"></span><span>DevOps — Backup Runbook 문서 → 자동화 스크립트로 발전</span></li>
+<ul>
+<li>GitHub Actions Bootstrap과 GitLab Runner CI/CD 역할 분리</li>
+<li>Docker Compose, Nginx, Prometheus/Grafana, Backup Runbook 기준으로 운영 흐름 문서화</li>
 </ul>
+</article>
 </div>
-<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
-<div style="font-family:var(--mono); font-size:10px; color:var(--accent4); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 03 · 진단 지표 실제화</div>
-<ul class="review-list" style="font-size:12px;">
-<li><span class="li-bullet"></span><span>k6 — kafkaLag AdminClient로 실제 lag 수집</span></li>
-<li><span class="li-bullet"></span><span>CB — SystemLog 저장 로직 LogAspect와 연결</span></li>
-<li><span class="li-bullet"></span><span>CB — LogLevelPolicy 문자열 → 예외 타입 기반 분기</span></li>
+</div>
+<div class="summary-section">
+<div class="summary-heading">
+<span>Improvements</span>
+<h3>프로젝트별 개선 포인트</h3>
+</div>
+<div class="improvement-board">
+<article class="improvement-lane cb">
+<h4>Circuit Breaker</h4>
+<ul>
+<li>CacheConfig 문서 표현과 실제 @Primary Redis 동작 차이 정리 필요</li>
+<li>SystemLog 엔티티가 LogAspect 저장 흐름과 아직 연결되지 않음</li>
+<li>LogLevelPolicy가 문자열 매칭에 의존해 예외 타입 기반 분기로 개선 가능</li>
 </ul>
+</article>
+<article class="improvement-lane k6">
+<h4>k6 Pipeline</h4>
+<ul>
+<li>kafkaLag placeholder 상태라 실제 consumer group lag 수집 필요</li>
+<li>Thread.sleep 기반 retry가 Kafka consume loop를 최대 7초 차단할 수 있음</li>
+<li>InfluxWriter buffer가 단일 스레드 전제라 병렬 처리 확장 시 동기화 필요</li>
+</ul>
+</article>
+<article class="improvement-lane server">
+<h4>Server Monitor</h4>
+<ul>
+<li>FastAPI on_event deprecated → lifespan 전환 필요</li>
+<li>sync endpoint 내 time.sleep(0.1)이 worker thread를 점유할 수 있음</li>
+<li>프로세스 분석 로직에 대한 단위 테스트 보강 필요</li>
+</ul>
+</article>
+<article class="improvement-lane devops">
+<h4>Self-Hosted DevOps</h4>
+<ul>
+<li>Monitoring image tag latest 사용 지점은 버전 고정 필요</li>
+<li>Backup Runbook은 문서 수준에서 자동화 스크립트로 발전 가능</li>
+<li>workflow에서 참조하지 않는 compose 파일은 정리 필요</li>
+</ul>
+</article>
 </div>
+</div>
+<div class="summary-section">
+<div class="summary-heading">
+<span>Patterns</span>
+<h3>반복적으로 확인된 개선 패턴 — 3가지 축</h3>
+</div>
+<div class="pattern-grid">
+<article class="pattern-card">
+<span class="pattern-num">01</span>
+<h4>문서 ↔ 코드 일치</h4>
+<p>README와 실제 구현의 의미 차이를 줄이는 작업</p>
+<ul>
+<li>CB — CacheConfig 문서 표현과 실제 Redis Primary 동작 차이</li>
+<li>k6 — kafkaLag placeholder와 실제 lag 수집 미연결</li>
+<li>DevOps — workflow에서 참조하지 않는 compose 파일 정리 필요</li>
+</ul>
+</article>
+<article class="pattern-card">
+<span class="pattern-num">02</span>
+<h4>운영 재현성 강화</h4>
+<p>수동 운영 기준을 자동화 가능한 절차로 전환</p>
+<ul>
+<li>DevOps — Monitoring image tag latest → 버전 고정 필요</li>
+<li>Server Monitor — on_event deprecated → lifespan 전환</li>
+<li>DevOps — Backup Runbook → 자동화 스크립트로 발전</li>
+</ul>
+</article>
+<article class="pattern-card">
+<span class="pattern-num">03</span>
+<h4>진단 지표 실제화</h4>
+<p>placeholder와 선언만 있는 관측 지점을 실제 수집으로 연결</p>
+<ul>
+<li>k6 — AdminClient로 실제 consumer group lag 수집</li>
+<li>CB — SystemLog 저장 로직을 LogAspect와 연결</li>
+<li>CB — LogLevelPolicy 문자열 매칭 → 예외 타입 기반 분기</li>
+</ul>
+</article>
 </div>
 </div>
 </section>
@@ -1729,6 +2023,21 @@ message.<span class="fn">contains</span>(<span class="str">"CIRCUIT_OPEN"</span>
 <span>Generated for presentation · 2026 · 4 Projects · Java · Kotlin · Python · DevOps</span>
 </footer>
 <script>
+function getActivePanel() {
+  return document.querySelector('.proj-panel.active');
+}
+
+function getActiveReviewSection() {
+  const activePanel = getActivePanel();
+  return activePanel ? activePanel.querySelector('.review-section') : null;
+}
+
+function setTopNavActive(key) {
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.nav === key);
+  });
+}
+
 function switchTab(idx) {
   document.querySelectorAll('.proj-tab').forEach((t, i) => {
     t.classList.toggle('active', i === idx);
@@ -1736,6 +2045,13 @@ function switchTab(idx) {
   document.querySelectorAll('.proj-panel').forEach((p, i) => {
     p.classList.toggle('active', i === idx);
   });
+
+  // If the user is currently in the Code Review area and switches project,
+  // keep the page positioned at the newly active project's review section.
+  if (window.location.hash === '#review') {
+    const review = getActiveReviewSection();
+    if (review) review.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function toggleReview(header) {
@@ -1743,18 +2059,52 @@ function toggleReview(header) {
   item.classList.toggle('open');
 }
 
-// Nav active on scroll
-const sections = ['projects','review','summary'];
+function scrollToTopNavTarget(key) {
+  let target = null;
+
+  if (key === 'projects') {
+    target = document.getElementById('projects');
+    history.replaceState(null, '', '#projects');
+  }
+
+  if (key === 'review') {
+    target = getActiveReviewSection();
+    history.replaceState(null, '', '#review');
+  }
+
+  if (key === 'summary') {
+    target = document.getElementById('summary');
+    history.replaceState(null, '', '#summary');
+  }
+
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTopNavActive(key);
+  }
+}
+
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', (event) => {
+    event.preventDefault();
+    scrollToTopNavTarget(a.dataset.nav);
+  });
+});
+
+// Nav active on scroll.
+// Code Review is resolved from the currently active project panel,
+// not from a fixed id hidden inside another tab.
 window.addEventListener('scroll', () => {
-  const y = window.scrollY + 80;
+  const y = window.scrollY + 90;
+  const projects = document.getElementById('projects');
+  const review = getActiveReviewSection();
+  const summary = document.getElementById('summary');
+
   let active = 'projects';
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el.offsetTop <= y) active = id;
-  });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
-  });
+  if (projects && projects.offsetTop <= y) active = 'projects';
+  if (review && review.offsetTop <= y) active = 'review';
+  if (summary && summary.offsetTop <= y) active = 'summary';
+
+  setTopNavActive(active);
 });
 </script>
 </body>
