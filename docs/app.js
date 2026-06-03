@@ -258,7 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>🔗 Project Resources</p>
                 <div>
                     <a href="https://app.notion.com/p/SEO-585550ea881b4f2eb8f110b0b27af2be" target="_blank" style="color: #0366d6;">📁 Notion</a>
-                    <a href="2026-backend-devops-observability-code-review.html" target="_blank" style="color: #0366d6;">✏️ 코드리뷰</a>
                 </div>
             `);
         }
@@ -295,6 +294,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>🔗 Project Resources</p>
                 <div>
                     <a href="https://github.com/seoheejung/self-hosted-devops-platform" target="_blank" style="color: #0366d6;">📁 Github</a>
+                </div>
+            `);
+        }
+
+        if (currentPage === 35 && is2026_2Project) {
+            appendResourceBox(`
+                <p>🔗 Project Resources</p>
+                <div>
+                    <a href="2026-backend-devops-observability-code-review.html" target="_blank" style="color: #0366d6;">✏️ Code Review</a>
                 </div>
             `);
         }
