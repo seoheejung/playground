@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Showcase &amp; Code Review</title>
+
+<link as_="style" crossorigin="anonymous" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --surface3: #222230;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0;
+  --muted: #8888aa;
+  --accent1: #7c6af7;
+  --accent2: #3ecfb0;
+  --accent3: #f97060;
+  --accent4: #f5a623;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+}
+.nav-links {
+  display: flex; gap: 0; list-style: none;
+}
+.nav-links a {
+  display: block; padding: 0 1rem;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); text-decoration: none;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+/* ── HERO ── */
+.hero {
+  padding: 130px 2rem 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124,106,247,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--accent2); letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+.hero-title span { color: var(--accent1); }
+.hero-sub {
+  font-size: 16px; color: var(--muted);
+  max-width: 520px; margin: 0 auto 2.5rem;
+}
+.hero-chips {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+}
+.chip {
+  font-family: var(--mono); font-size: 11px;
+  padding: 4px 12px; border-radius: 100px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--muted);
+}
+
+/* ── PROJECT TABS ── */
+.projects-section {
+  max-width: 1280px; margin: 0 auto; padding: 4rem 2rem;
+}
+.section-label {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.proj-tabs {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  margin-bottom: 2rem;
+}
+.proj-tab {
+  padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer;
+  transition: all 0.2s; text-align: left;
+}
+.proj-tab:hover { border-color: var(--border2); background: var(--surface2); }
+.proj-tab.active {
+  background: var(--surface2);
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 1px var(--accent1) inset;
+}
+.tab-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted); display: block; margin-bottom: 6px;
+}
+.tab-name {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text); display: block; line-height: 1.4;
+}
+.proj-tab.active .tab-name { color: var(--accent1); }
+
+/* ── PROJECT PANEL ── */
+.proj-panel { display: none; }
+.proj-panel.active { display: block; }
+
+.proj-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start;
+}
+.proj-header-left {}
+.proj-tag {
+  font-family: var(--mono); font-size: 10px;
+  padding: 3px 10px; border-radius: 100px;
+  display: inline-block; margin-bottom: 1rem;
+}
+.tag-java { background: rgba(240,110,60,0.15); color: #f06e3c; border: 1px solid rgba(240,110,60,0.3); }
+.tag-kotlin { background: rgba(124,106,247,0.15); color: #a394f7; border: 1px solid rgba(124,106,247,0.3); }
+.tag-python { background: rgba(62,207,176,0.15); color: #3ecfb0; border: 1px solid rgba(62,207,176,0.3); }
+.tag-infra { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
+.proj-name {
+  font-family: var(--display);
+  font-size: 36px; color: #fff; line-height: 1; margin-bottom: 0.75rem;
+}
+.proj-desc { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 600px; }
+.proj-meta {
+  display: flex; flex-direction: column; gap: 8px; min-width: 180px;
+}
+.meta-item {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); display: flex; align-items: center; gap: 8px;
+}
+.meta-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.dot-green { background: #3ecfb0; }
+.dot-purple { background: #7c6af7; }
+.dot-orange { background: #f97060; }
+.dot-yellow { background: #f5a623; }
+
+/* ── STACK BADGES ── */
+.stack-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem;
+}
+.stack-badge {
+  font-family: var(--mono); font-size: 10px;
+  padding: 3px 10px; border-radius: 4px;
+  background: var(--surface3); border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* ── CONTENT GRID ── */
+.content-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 12px;
+}
+.content-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.card-title {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title-dot {
+  width: 4px; height: 14px; border-radius: 2px; flex-shrink: 0;
+}
+.dot-bar-green { background: var(--accent2); }
+.dot-bar-purple { background: var(--accent1); }
+.dot-bar-red { background: var(--accent3); }
+.dot-bar-yellow { background: var(--accent4); }
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #0d0d12;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  white-space: pre;
+  tab-size: 2;
+}
+.code-block .kw { color: #c792ea; }
+.code-block .fn { color: #82aaff; }
+.code-block .str { color: #c3e88d; }
+.code-block .cmt { color: #546e7a; font-style: italic; }
+.code-block .ann { color: #f78c6c; }
+.code-block .cls { color: #ffcb6b; }
+.code-block .num { color: #f78c6c; }
+.code-block .op { color: #89ddff; }
+
+/* ── REVIEW CARD ── */
+.review-block {
+  margin-bottom: 8px;
+}
+.review-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.review-header {
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.review-header:hover { background: var(--surface2); }
+.review-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+}
+.icon-good { background: rgba(62,207,176,0.15); color: var(--accent2); }
+.icon-warn { background: rgba(245,166,35,0.15); color: var(--accent4); }
+.icon-bad { background: rgba(249,112,96,0.15); color: var(--accent3); }
+.review-title { font-size: 14px; font-weight: 500; flex: 1; }
+.review-badge {
+  font-family: var(--mono); font-size: 10px;
+  padding: 2px 8px; border-radius: 100px;
+}
+.badge-good { background: rgba(62,207,176,0.1); color: var(--accent2); border: 1px solid rgba(62,207,176,0.2); }
+.badge-warn { background: rgba(245,166,35,0.1); color: var(--accent4); border: 1px solid rgba(245,166,35,0.2); }
+.badge-bad { background: rgba(249,112,96,0.1); color: var(--accent3); border: 1px solid rgba(249,112,96,0.2); }
+.review-chevron {
+  font-size: 12px; color: var(--muted);
+  transition: transform 0.2s;
+}
+.review-item.open .review-chevron { transform: rotate(180deg); }
+.review-body {
+  display: none; padding: 0 1.5rem 1.2rem;
+  border-top: 1px solid var(--border);
+}
+.review-item.open .review-body { display: block; }
+.review-body p { font-size: 13px; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.7; }
+.review-body p:last-child { margin-bottom: 0; }
+.review-body .highlight { color: var(--text); }
+.review-body .code-inline {
+  font-family: var(--mono); font-size: 11px;
+  background: var(--surface3); padding: 1px 6px; border-radius: 4px;
+  color: #c3e88d;
+}
+
+/* ── ARCH DIAGRAM ── */
+.arch-flow {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; padding: 1rem 0;
+}
+.arch-node {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px; padding: 6px 14px;
+  font-family: var(--mono); font-size: 11px; color: var(--text);
+  white-space: nowrap;
+}
+.arch-node.highlight-p { border-color: var(--accent1); color: var(--accent1); }
+.arch-node.highlight-g { border-color: var(--accent2); color: var(--accent2); }
+.arch-node.highlight-o { border-color: var(--accent3); color: var(--accent3); }
+.arch-node.highlight-y { border-color: var(--accent4); color: var(--accent4); }
+.arch-arrow {
+  color: var(--muted); font-size: 14px;
+}
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  margin-bottom: 12px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 1rem 1.2rem;
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--mono); font-size: 22px; font-weight: 500;
+  color: #fff; display: block;
+}
+.stat-label {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* ── FULL WIDTH CARD ── */
+.full-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 12px;
+}
+
+/* ── LIST ── */
+.review-list { list-style: none; }
+.review-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--muted);
+  display: flex; align-items: flex-start; gap: 8px;
+  line-height: 1.6;
+}
+.review-list li:last-child { border-bottom: none; }
+.review-list li span { color: var(--text); }
+.li-bullet {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--muted); margin-top: 8px; flex-shrink: 0;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center; padding: 3rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+
+/* ── REVIEW BASIS ── */
+.review-basis {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 1rem; flex-wrap: wrap;
+}
+.basis-badge {
+  font-family: var(--mono); font-size: 10px;
+  padding: 3px 10px; border-radius: 4px;
+  background: rgba(62,207,176,0.08);
+  border: 1px solid rgba(62,207,176,0.2);
+  color: var(--accent2);
+  letter-spacing: 0.04em;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+@media (max-width: 900px) {
+  .proj-tabs { grid-template-columns: 1fr 1fr; }
+  .proj-header { grid-template-columns: 1fr; }
+  .content-grid { grid-template-columns: 1fr; }
+  .content-grid.three { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+}
+
+
+/* ─────────────────────────────────────────────
+   v6 sync patch: portfolio order, chapter colors, modern Korean fonts
+   Font policy:
+   - Pretendard Variable: Korean/UI/display
+   - JetBrains Mono: code/monospace
+───────────────────────────────────────────── */
+:root {
+  --project-server: #8a6cff;
+  --project-cb: #27d2c7;
+  --project-k6: #ff8b5f;
+  --project-devops: #5bd39a;
+
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
+  --display: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+body {
+  font-family: var(--sans);
+  letter-spacing: -0.01em;
+}
+
+.hero-title,
+.proj-name {
+  font-family: var(--display);
+  font-weight: 850;
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+}
+
+.hero-title span {
+  color: var(--project-server);
+}
+
+/* active tab colors after reorder:
+   1 Server / 2 Circuit / 3 k6 / 4 Self-Hosted */
+.proj-tab:nth-child(1).active {
+  border-color: var(--project-server);
+  box-shadow: 0 0 0 1px var(--project-server) inset;
+}
+.proj-tab:nth-child(1).active .tab-name,
+.proj-tab:nth-child(1).active .tab-num { color: var(--project-server); }
+
+.proj-tab:nth-child(2).active {
+  border-color: var(--project-cb);
+  box-shadow: 0 0 0 1px var(--project-cb) inset;
+}
+.proj-tab:nth-child(2).active .tab-name,
+.proj-tab:nth-child(2).active .tab-num { color: var(--project-cb); }
+
+.proj-tab:nth-child(3).active {
+  border-color: var(--project-k6);
+  box-shadow: 0 0 0 1px var(--project-k6) inset;
+}
+.proj-tab:nth-child(3).active .tab-name,
+.proj-tab:nth-child(3).active .tab-num { color: var(--project-k6); }
+
+.proj-tab:nth-child(4).active {
+  border-color: var(--project-devops);
+  box-shadow: 0 0 0 1px var(--project-devops) inset;
+}
+.proj-tab:nth-child(4).active .tab-name,
+.proj-tab:nth-child(4).active .tab-num { color: var(--project-devops); }
+
+/* project tag colors after reorder */
+.tag-python {
+  background: rgba(138,108,255,0.15);
+  color: var(--project-server);
+  border: 1px solid rgba(138,108,255,0.35);
+}
+.tag-java {
+  background: rgba(39,210,199,0.15);
+  color: var(--project-cb);
+  border: 1px solid rgba(39,210,199,0.35);
+}
+.tag-kotlin {
+  background: rgba(255,139,95,0.15);
+  color: var(--project-k6);
+  border: 1px solid rgba(255,139,95,0.35);
+}
+.tag-infra {
+  background: rgba(91,211,154,0.15);
+  color: var(--project-devops);
+  border: 1px solid rgba(91,211,154,0.35);
+}
+
+/* Panel-local accent propagation after reorder */
+#panel-0 { --panel-accent: var(--project-server); }
+#panel-1 { --panel-accent: var(--project-cb); }
+#panel-2 { --panel-accent: var(--project-k6); }
+#panel-3 { --panel-accent: var(--project-devops); }
+
+.proj-panel .basis-badge {
+  background: color-mix(in srgb, var(--panel-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--panel-accent) 35%, transparent);
+  color: var(--panel-accent);
+}
+
+.proj-panel .card-title-dot {
+  background: var(--panel-accent);
+}
+
+#panel-0 .arch-node.highlight-p,
+#panel-0 .arch-node.highlight-g,
+#panel-0 .arch-node.highlight-y,
+#panel-0 .arch-node.highlight-o { border-color: var(--project-server); color: var(--project-server); }
+
+#panel-1 .arch-node.highlight-p,
+#panel-1 .arch-node.highlight-g,
+#panel-1 .arch-node.highlight-y,
+#panel-1 .arch-node.highlight-o { border-color: var(--project-cb); color: var(--project-cb); }
+
+#panel-2 .arch-node.highlight-p,
+#panel-2 .arch-node.highlight-g,
+#panel-2 .arch-node.highlight-y,
+#panel-2 .arch-node.highlight-o { border-color: var(--project-k6); color: var(--project-k6); }
+
+#panel-3 .arch-node.highlight-p,
+#panel-3 .arch-node.highlight-g,
+#panel-3 .arch-node.highlight-y,
+#panel-3 .arch-node.highlight-o { border-color: var(--project-devops); color: var(--project-devops); }
+
+#panel-0 .proj-meta .meta-dot { background: var(--project-server); }
+#panel-1 .proj-meta .meta-dot { background: var(--project-cb); }
+#panel-2 .proj-meta .meta-dot { background: var(--project-k6); }
+#panel-3 .proj-meta .meta-dot { background: var(--project-devops); }
+
+/* Hero chip color sync */
+.hero-chips .chip:nth-child(1),
+.hero-chips .chip:nth-child(5),
+.hero-chips .chip:nth-child(6) { border-color: rgba(39,210,199,.35); color: var(--project-cb); }
+.hero-chips .chip:nth-child(2),
+.hero-chips .chip:nth-child(4) { border-color: rgba(255,139,95,.35); color: var(--project-k6); }
+.hero-chips .chip:nth-child(3),
+.hero-chips .chip:nth-child(7) { border-color: rgba(138,108,255,.35); color: var(--project-server); }
+.hero-chips .chip:nth-child(8),
+.hero-chips .chip:nth-child(9),
+.hero-chips .chip:nth-child(10) { border-color: rgba(91,211,154,.35); color: var(--project-devops); }
+
+/* Make code review page feel less dated */
+.proj-tab,
+.card,
+.full-card,
+.review-item,
+.proj-header,
+.stat-card {
+  border-radius: 14px;
+}
+
+.review-title,
+.proj-desc,
+.review-body p {
+  letter-spacing: -0.015em;
+}
+
+.code-block {
+  font-family: var(--mono);
+}
+
+/* ─────────────────────────────────────────────
+   v7 responsive/readability patch
+   Problem fixed:
+   - 2-column code grids overflowed on medium viewport widths
+   - code blocks were wider than cards and clipped horizontally
+   - cards kept fixed visual density below 1280px
+───────────────────────────────────────────── */
+
+/* safer global overflow behavior */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.projects-section {
+  width: min(1280px, 100%);
+}
+
+/* prevent grid children from forcing the page wider than viewport */
+.proj-panel,
+.proj-header,
+.content-grid,
+.card,
+.full-card,
+.code-block,
+.review-item,
+.arch-flow,
+.stats-row,
+.table-block {
+  min-width: 0;
+}
+
+/* cards/grid should degrade before the old 900px point */
+.content-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.content-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.proj-header {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
+}
+
+.proj-header-left,
+.proj-meta {
+  min-width: 0;
+}
+
+/* code blocks: keep code readable but stop layout breakage */
+.code-block {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  font-size: clamp(10px, 0.92vw, 12px);
+  line-height: 1.65;
+}
+
+/* long architecture rows should wrap cleanly */
+.arch-flow {
+  align-items: stretch;
+}
+
+.arch-node {
+  max-width: 210px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.arch-arrow {
+  align-self: center;
+}
+
+/* medium desktop / small laptop */
+@media (max-width: 1180px) {
+  nav {
+    padding: 0 1rem;
+  }
+
+  .projects-section {
+    padding: 3rem 1rem;
+  }
+
+  .proj-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .proj-header {
+    grid-template-columns: 1fr;
+  }
+
+  .proj-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-grid,
+  .content-grid.three {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card,
+  .full-card,
+  .proj-header {
+    padding: 1.25rem;
+  }
+
+  .code-block {
+    font-size: 11px;
+  }
+}
+
+/* tablet */
+@media (max-width: 760px) {
+  nav {
+    height: auto;
+    min-height: 56px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .nav-links a {
+    padding: 0 0.75rem;
+    white-space: nowrap;
+  }
+
+  .hero {
+    padding: 100px 1rem 56px;
+  }
+
+  .hero-title {
+    font-size: clamp(44px, 14vw, 72px);
+  }
+
+  .hero-sub {
+    max-width: 100%;
+  }
+
+  .proj-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .proj-name {
+    font-size: 30px;
+  }
+
+  .proj-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-row,
+  .review-basis,
+  .hero-chips {
+    gap: 6px;
+  }
+
+  .full-card,
+  .card {
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .review-header {
+    padding: 0.9rem 1rem;
+  }
+
+  .review-body {
+    padding: 0 1rem 1rem;
+  }
+
+  .arch-flow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .arch-arrow {
+    transform: rotate(90deg);
+    text-align: center;
+    align-self: center;
+  }
+
+  .arch-node {
+    max-width: none;
+    width: 100%;
+  }
+
+  .code-block {
+    font-size: 10.5px;
+    padding: 1rem;
+  }
+}
+
+/* narrow phones */
+@media (max-width: 520px) {
+  body {
+    font-size: 14px;
+  }
+
+  .projects-section {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .hero {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .code-block {
+    font-size: 10px;
+    line-height: 1.55;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .review-title {
+    font-size: 13px;
+  }
+
+  .review-badge {
+    display: none;
+  }
+}
+
+</style>
+</head>
+<body>
+<nav>
+<span class="nav-logo">$ project --showcase</span>
+<ul class="nav-links">
+<li><a class="active" href="#projects">Projects</a></li>
+<li><a href="#review">Code Review</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</nav>
+<!-- ── HERO ── -->
+<header class="hero">
+<p class="hero-eyebrow">Backend Engineering · DevOps · Infrastructure</p>
+<h1 class="hero-title">PROJECT<br/><span>SHOWCASE</span></h1>
+<p class="hero-sub">4개 프로젝트의 설계 의도, 기술 스택, 코드 리뷰를 한 페이지로 정리한 발표 자료</p>
+<div class="hero-chips">
+<span class="chip">Java / Spring Boot</span>
+<span class="chip">Kotlin</span>
+<span class="chip">Python / FastAPI</span>
+<span class="chip">Kafka</span>
+<span class="chip">Resilience4j</span>
+<span class="chip">InfluxDB v3</span>
+<span class="chip">Ansible</span>
+<span class="chip">GitLab CI/CD</span>
+<span class="chip">Docker</span>
+<span class="chip">Prometheus / Grafana</span>
+</div>
+</header>
+<!-- ── PROJECTS ── -->
+<main class="projects-section" id="projects">
+<p class="section-label">04 Projects</p>
+<!-- TABS -->
+<div class="proj-tabs">
+
+
+
+
+<button class="proj-tab active" onclick="switchTab(0)">
+<span class="tab-num">01 / Python · FastAPI</span>
+<span class="tab-name">Server Monitor<br/>Dashboard</span>
+</button><button class="proj-tab" onclick="switchTab(1)">
+<span class="tab-num">02 / Java · Spring Boot</span>
+<span class="tab-name">Circuit Breaker<br/>Tester</span>
+</button><button class="proj-tab" onclick="switchTab(2)">
+<span class="tab-num">03 / Kotlin · Kafka</span>
+<span class="tab-name">k6 Realtime<br/>Metrics Pipeline</span>
+</button><button class="proj-tab" onclick="switchTab(3)">
+<span class="tab-num">04 / DevOps · Infra</span>
+<span class="tab-name">Self-Hosted<br/>DevOps Platform</span>
+</button></div><div class="proj-panel active" id="panel-0">
+<div class="proj-header">
+<div class="proj-header-left">
+<span class="proj-tag tag-python">Python 3 · FastAPI</span>
+<h2 class="proj-name">SERVER MONITOR DASHBOARD</h2>
+<p class="proj-desc">
+          단순 수치 나열이 아닌 "이 서버에서 무엇이 실행 중이며, 지금 안전한 상태인가"를
+          판단하는 서버 관리형 모니터링 대시보드.
+          psutil 기반 크로스 플랫폼 설계로 Windows 개발 환경과 Rocky Linux 운영 환경의
+          구조적 차이를 직접 구현·검증한다.
+        </p>
+<div class="stack-row">
+<span class="stack-badge">FastAPI</span>
+<span class="stack-badge">psutil</span>
+<span class="stack-badge">MongoDB</span>
+<span class="stack-badge">Ansible</span>
+<span class="stack-badge">Nginx</span>
+<span class="stack-badge">systemd</span>
+<span class="stack-badge">Jinja2</span>
+<span class="stack-badge">Rocky Linux</span>
+</div>
+<div class="review-basis">
+<span class="basis-badge">✦ Review Basis: Source Code + README</span>
+<span class="basis-badge">Windows dev · Rocky Linux prod 크로스 플랫폼 검증</span>
+</div>
+</div>
+<div class="proj-meta">
+<div class="meta-item"><span class="meta-dot dot-green"></span>CPU / RAM / Disk / Uptime 모니터링</div>
+<div class="meta-item"><span class="meta-dot dot-purple"></span>프로세스 위험 분석 (CRITICAL/WARN/OK)</div>
+<div class="meta-item"><span class="meta-dot dot-orange"></span>journalctl 기반 로그 조회</div>
+<div class="meta-item"><span class="meta-dot dot-yellow"></span>MongoDB 기반 프로세스 정책 DB</div>
+<div class="meta-item"><span class="meta-dot dot-green"></span>Ansible + systemd 운영 자동화</div>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>핵심 코드 — 프로세스 상태 분류</div>
+<div class="code-block"><span class="cmt"># Case A/B/C 분기 보안 진단</span>
+<span class="kw">def</span> <span class="fn">build_status</span>(proc):
+  warnings = proc[<span class="str">"warnings"</span>]
+  is_known = <span class="kw">not</span> proc[<span class="str">"explain"</span>].<span class="fn">startswith</span>(<span class="str">"미등록"</span>)
+  CRITICAL = (<span class="str">"SUSPICIOUS_PATH"</span>, <span class="str">"RUNNING_AS_ADMIN"</span>)
+  critical = [w <span class="kw">for</span> w <span class="kw">in</span> warnings
+              <span class="kw">if any</span>(k <span class="kw">in</span> w <span class="kw">for</span> k <span class="kw">in</span> CRITICAL)]
+
+  <span class="kw">if not</span> warnings <span class="kw">and</span> is_known:
+    proc[<span class="str">"status_code"</span>] = <span class="str">"OK"</span> <span class="cmt"># ✅ 안전</span>
+<span class="kw">elif not</span> warnings:
+    proc[<span class="str">"status_code"</span>] = <span class="str">"WARN"</span> <span class="cmt"># ⚠️ 미등록</span>
+<span class="kw">elif</span> critical:
+    proc[<span class="str">"status_code"</span>] = <span class="str">"DANGER"</span> <span class="cmt"># 🚨 위험</span>
+<span class="kw">else</span>:
+    proc[<span class="str">"status_code"</span>] = <span class="str">"WARN"</span> <span class="cmt"># ⚠️ 주의</span></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>핵심 코드 — 프로세스 종료 흐름</div>
+<div class="code-block"><span class="cmt"># 4단계 종료 가드</span>
+<span class="kw">def</span> <span class="fn">terminate_process</span>(pid, os_type):
+  proc = <span class="fn">get_live_process</span>(pid)
+  <span class="kw">if not</span> proc:
+    <span class="kw">return</span> <span class="fn">build_result</span>(<span class="str">"not_found"</span>, ...)
+
+  <span class="cmt"># 1. MongoDB 정책 차단</span>
+  mongo_block = <span class="fn">blocked_by_mongo_policy</span>(proc, os_type)
+  <span class="kw">if</span> mongo_block: <span class="kw">return</span> mongo_block
+
+  <span class="cmt"># 2. 시스템 프로세스 보호 (실시간)</span>
+<span class="kw">if</span> <span class="fn">is_system_process</span>(proc, os_type):
+    <span class="kw">return</span> <span class="fn">build_result</span>(<span class="str">"blocked"</span>, ..., <span class="num">403</span>)
+
+  <span class="cmt"># 3. Soft Kill (SIGTERM, 5초 대기)</span>
+<span class="kw">if</span> <span class="fn">soft_kill</span>(proc): <span class="kw">return</span> <span class="fn">build_result</span>(<span class="str">"terminated"</span>...)
+
+  <span class="cmt"># 4. Hard Kill (SIGKILL)</span>
+<span class="kw">if</span> <span class="fn">hard_kill</span>(proc): <span class="kw">return</span> <span class="fn">build_result</span>(<span class="str">"terminated"</span>...)</div>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-yellow"></span>핵심 코드 — MongoDB sync_with_mongodb</div>
+<div class="code-block"><span class="cmt"># Common → OS전용 순서로 우선순위 보장</span>
+<span class="kw">for</span> item <span class="kw">in</span> (common_data + os_data):
+  name = item.get(<span class="str">"name"</span>).lower()
+  <span class="cmt"># Windows: .exe 유무 모두 매칭</span>
+<span class="kw">if</span> current_os == <span class="str">"windows"</span>:
+    name_no_ext = name.rsplit(<span class="str">'.'</span>, <span class="num">1</span>)[<span class="num">0</span>]
+    temp_map[name_no_ext] = normalized
+    temp_map[name] = normalized
+    <span class="kw">if not</span> name.endswith(<span class="str">".exe"</span>):
+      temp_map[<span class="fn">f</span><span class="str">"{name_no_ext}.exe"</span>] = normalized
+  <span class="kw">else</span>:
+    temp_map[name] = normalized
+<span class="cmt"># O(1) 조회로 캐시 활용</span>
+CACHED_KNOWN_PROCS = temp_map</div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-red"></span>핵심 코드 — startup 이중 fallback</div>
+<div class="code-block"><span class="cmt"># MongoDB 장애 시 로컬 JSON으로 안전하게 기동</span>
+<span class="ann">@app.on_event("startup")</span>
+<span class="kw">def</span> <span class="fn">startup_event</span>():
+  local_data = <span class="fn">load_and_validate</span>(JSON_FILE_PATH)
+  <span class="kw">try</span>:
+    db_manager.connect()
+    <span class="kw">if</span> db_manager.db <span class="kw">is None</span>:
+      <span class="kw">raise</span> <span class="cls">RuntimeError</span>(<span class="str">"MongoDB 연결 실패"</span>)
+    db_manager.seed_initial_data(local_data)
+    db_data = db_manager.get_known_processes()
+    <span class="fn">sync_with_mongodb</span>(db_data, OS_TYPE)
+  <span class="kw">except</span> <span class="cls">Exception</span>:
+    <span class="cmt"># DB 실패 → JSON fallback</span>
+<span class="fn">sync_with_mongodb</span>(local_data, OS_TYPE)</div>
+</div>
+</div>
+<div class="full-card" style="margin-top:0;">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
+<div class="review-block">
+<div class="review-item open">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">4단계 종료 가드 — 방어 레이어 계층화</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>MongoDB 정책 → 시스템 프로세스 실시간 확인 → Soft Kill → Hard Kill 순서로 4단계 방어 레이어를 구성했습니다. UI 캐시를 신뢰하지 않고 <span class="code-inline">get_live_process(pid)</span>로 매번 실시간 재수집해 race condition(UI에서 봤을 때 존재하지만 실제로는 종료된 프로세스)을 방지한 점이 돋보입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">CACHED_KNOWN_PROCS — O(1) 조회 최적화</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>MongoDB 데이터를 서버 기동 시 한 번 읽어 dict로 메모리에 캐시하고, 프로세스 분석마다 O(1) dict 조회로 처리합니다. 수백 개 프로세스를 분석할 때 매번 DB를 쿼리하는 대신 메모리 캐시를 쓰는 실용적인 설계입니다.</p>
+<p>Windows 환경에서 <span class="code-inline">python.exe</span>와 <span class="code-inline">python</span> 양쪽 키를 모두 등록해 확장자 유무에 관계없이 매칭되도록 한 세심한 처리도 인상적입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">MongoDB Fallback — 기동 안정성 확보</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>MongoDB 연결 실패 시 로컬 JSON 파일로 자동 fallback하는 startup 설계로 DB 장애에도 앱이 기동됩니다. 필수 초기 데이터(<span class="code-inline">load_and_validate_process_data</span>)가 없으면 즉시 예외를 발생시켜 "데이터 없이 조용히 기동하는" 시나리오를 방지했습니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">on_event("startup") — deprecated API 사용</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>FastAPI 0.93+에서 <span class="code-inline">@app.on_event("startup")</span> / <span class="code-inline">@app.on_event("shutdown")</span>은 deprecated입니다. <span class="code-inline">lifespan</span> 컨텍스트 매니저 패턴으로 교체가 권장됩니다.</p>
+<div class="code-block"><span class="kw">from</span> contextlib <span class="kw">import</span> asynccontextmanager
+<span class="ann">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app):
+  startup_event()    <span class="cmt"># 기존 startup 로직</span>
+<span class="kw">yield</span>
+  shutdown_event()   <span class="cmt"># 기존 shutdown 로직</span>
+app = <span class="cls">FastAPI</span>(lifespan=lifespan)</div>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">collect_processes — CPU 샘플링이 worker thread 점유</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">time.sleep(0.1)</span>으로 CPU 샘플링을 수행합니다. 해당 endpoint는 <span class="code-inline">def</span> sync route이므로 FastAPI/Starlette가 threadpool에서 실행하며 event loop를 직접 블로킹하지는 않습니다. 그러나 동시 요청이 늘면 이 sleep이 worker thread를 100ms씩 점유해 threadpool 소진으로 이어질 수 있습니다.</p>
+<p>CPU 샘플링을 <span class="code-inline">run_in_executor</span>로 별도 executor에서 수행하거나, BackgroundTask로 분리하는 개선이 가능합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="proj-panel" id="panel-1">
+<div class="proj-header">
+<div class="proj-header-left">
+<span class="proj-tag tag-java">Java 17 · Spring Boot 3.4</span>
+<h2 class="proj-name">CIRCUIT BREAKER TESTER</h2>
+<p class="proj-desc">
+          시스템이 망가지기 직전에 어떤 일이 벌어지는지를 관측하기 위한 부하·장애 재현 백엔드.
+          CPU / DB 부하를 의도적으로 주입하고 Resilience4j 서킷 브레이커의 상태 전이와
+          복구 프로세스를 실증한다.
+          Prometheus 메트릭 · Snapshot API · Trace ID로 모든 장애 순간을 데이터로 포착한다.
+        </p>
+<div class="stack-row">
+<span class="stack-badge">Spring Boot 3.4.2</span>
+<span class="stack-badge">Resilience4j</span>
+<span class="stack-badge">Bucket4j</span>
+<span class="stack-badge">PostgreSQL 16</span>
+<span class="stack-badge">Redis 7</span>
+<span class="stack-badge">Micrometer</span>
+<span class="stack-badge">Spring Cloud Vault</span>
+<span class="stack-badge">Caffeine Bucket Store</span>
+</div>
+<div class="review-basis">
+<span class="basis-badge">✦ Review Basis: Source Code + README</span>
+<span class="basis-badge">Java 17 · Spring Boot 3.4.2</span>
+</div>
+</div>
+<div class="proj-meta">
+<div class="meta-item"><span class="meta-dot dot-green"></span>CircuitBreaker OPEN/CLOSE/HALF-OPEN</div>
+<div class="meta-item"><span class="meta-dot dot-purple"></span>IP Rate Limit (Bucket4j)</div>
+<div class="meta-item"><span class="meta-dot dot-orange"></span>Redis Primary Cache + Caffeine Bucket Store</div>
+<div class="meta-item"><span class="meta-dot dot-yellow"></span>AOP 기반 구조화 로그</div>
+<div class="meta-item"><span class="meta-dot dot-green"></span>Vault 자격증명 외부화</div>
+</div>
+</div>
+<!-- Architecture flow -->
+<div class="full-card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>아키텍처 흐름</div>
+<div class="arch-flow">
+<span class="arch-node">HTTP Request</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-p">TraceIdFilter</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-p">RateLimitFilter</span><span class="arch-arrow">→</span><span class="arch-node highlight-p">Caffeine Bucket Store<br/>(RateLimit IP Bucket)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">Controller</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-y">@CircuitBreaker</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node">Service</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">Redis Primary Cache</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node">PostgreSQL</span>
+</div>
+<div class="arch-flow" style="margin-top:8px;">
+<span class="arch-node highlight-o">GlobalExceptionHandler</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node">CallNotPermittedException → 503</span>
+<span style="margin-left:20px;"></span>
+<span class="arch-node highlight-p">LogAspect (AOP)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node">LOAD_START / END / FAIL / ERROR</span>
+</div>
+</div>
+<div class="content-grid">
+<!-- 핵심 코드 -->
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>핵심 코드 — RuntimeFeatureState</div>
+<div class="code-block"><span class="cmt">// Lock-free CAS 토글 — Race condition 없이 ON/OFF</span>
+<span class="kw">private static</span> <span class="cls">boolean</span> <span class="fn">toggle</span>(<span class="cls">AtomicBoolean</span> flag) {
+  <span class="kw">while</span> (<span class="kw">true</span>) {
+    <span class="cls">boolean</span> prev = flag.<span class="fn">get</span>();
+    <span class="cls">boolean</span> next = !prev;
+    <span class="kw">if</span> (flag.<span class="fn">compareAndSet</span>(prev, next))
+      <span class="kw">return</span> next;
+    <span class="cmt">// CAS 실패 → 최신값 재읽어 재시도</span>
+  }
+}</div>
+<p style="font-size:12px; color:var(--muted);">서킷/Rate Limit ON·OFF를 서버 재시작 없이 동적 전환.
+        <span class="code-inline">AtomicBoolean</span>의 CAS(Compare-And-Swap)로 동시 토글 시 레이스 컨디션 완전 차단.</p>
+</div>
+<!-- 핵심 코드 2 -->
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-yellow"></span>핵심 코드 — RateLimitFilter</div>
+<div class="code-block"><span class="cmt">// IP당 Bucket: burst 40, refill 20/s</span>
+<span class="cls">Bandwidth</span> limit = <span class="cls">Bandwidth</span>.<span class="fn">classic</span>(
+  <span class="num">40</span>,
+  <span class="cls">Refill</span>.<span class="fn">intervally</span>(<span class="num">20</span>,
+    <span class="cls">Duration</span>.<span class="fn">ofSeconds</span>(<span class="num">1</span>))
+);
+
+<span class="cmt">// Caffeine: 10분 미사용 시 제거, 최대 10,000 IP</span>
+<span class="kw">private final</span> <span class="cls">Cache</span>&lt;<span class="cls">String</span>, <span class="cls">Bucket</span>&gt; bucketStore =
+  <span class="cls">Caffeine</span>.<span class="fn">newBuilder</span>()
+    .<span class="fn">expireAfterAccess</span>(<span class="num">10</span>, <span class="cls">TimeUnit</span>.MINUTES)
+    .<span class="fn">maximumSize</span>(<span class="num">10_000</span>)
+    .<span class="fn">build</span>();</div>
+<p style="font-size:12px; color:var(--muted);">Caffeine 캐시로 IP-bucket 메모리 자동 관리.
+        버스트 허용 + 간격 보충(intervally)으로 순간 급증은 허용하되 지속적 과부하는 차단.</p>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>핵심 코드 — Redis Primary Cache</div>
+<div class="code-block"><span class="cmt">// @Primary → Redis가 기본 CacheManager / Caffeine은 보조 구성</span>
+<span class="ann">@Cacheable</span>(
+  value = <span class="str">"loadTestResults"</span>,
+  key = <span class="str">"#pageable.pageNumber + '-' + ..."</span>,
+  unless = <span class="str">"#result == null || #result.isEmpty()"</span>
+)
+<span class="kw">public</span> <span class="cls">Page</span>&lt;<span class="cls">DummyDataRecord</span>&gt; <span class="fn">findAllCached</span>(
+    <span class="cls">Pageable</span> pageable) { ... }
+
+<span class="ann">@Caching</span>(evict = {
+  <span class="ann">@CacheEvict</span>(value=<span class="str">"loadTestResults"</span>, allEntries=<span class="kw">true</span>),
+  <span class="ann">@CacheEvict</span>(value=<span class="str">"referenceData"</span>, key=<span class="str">"#result.id"</span>)
+})
+<span class="kw">public</span> <span class="cls">DummyDataRecord</span> <span class="fn">save</span>(<span class="cls">DummyDataRecord</span> record) { ... }</div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-red"></span>핵심 코드 — DB 부하 시뮬레이션</div>
+<div class="code-block"><span class="cmt">// N개 독립 트랜잭션으로 Hikari 커넥션 풀 고갈 유도</span>
+<span class="kw">for</span> (<span class="cls">int</span> i = <span class="num">0</span>; i &lt; repeatCount; i++) {
+  <span class="kw">final int</span> idx = i;
+  transactionTemplate.<span class="fn">execute</span>(status -&gt; {
+    dummyDataRepository.<span class="fn">save</span>(
+      <span class="kw">new</span> <span class="cls">DummyDataRecord</span>(<span class="str">"payload-"</span> + idx));
+    dummyDataRepository.<span class="fn">flush</span>();
+    <span class="cmt">// flush() → 즉시 DB I/O → 커넥션 점유 증가</span>
+<span class="kw">return null</span>;
+  });
+}</div>
+<p style="font-size:12px; color:var(--muted);">하나의 대규모 트랜잭션이 아니라 N개 독립 트랜잭션을 생성해
+        HikariCP 커넥션 풀 고갈 상황을 의도적으로 재현. <span class="code-inline">flush()</span>로 쓰기 지연을 제거해 실제 DB I/O 발생을 보장.</p>
+</div>
+</div>
+<!-- Code Review Section -->
+<div class="full-card" id="review" style="margin-top:1rem;">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
+<div class="review-block">
+<div class="review-item open">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">CAS 기반 Lock-free 토글 설계</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="highlight">RuntimeFeatureState</span>에서 <span class="code-inline">AtomicBoolean.compareAndSet()</span>을 사용한 CAS 루프는 교과서적으로 올바른 Lock-free 패턴입니다. 단순 <span class="code-inline">synchronized</span> 블록 대신 CAS를 선택해 경합 구간의 블로킹을 완전히 제거했습니다.</p>
+<p>Rate Limit 토글과 Redis 캐시 토글을 동일한 <span class="code-inline">toggle(AtomicBoolean)</span> 내부 함수로 위임해 중복 없이 재사용한 구조도 명확합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">FilterOrderConfig — 책임 분리 구조</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">TraceIdFilter(order=1) → RateLimitFilter(order=2)</span> 실행 순서를 <span class="highlight">FilterOrderConfig</span> 전용 클래스에 명시적으로 고정한 설계는 필터 로직과 실행 순서 제어를 명확히 분리합니다.</p>
+<p>RateLimitFilter 내부에서 <span class="code-inline">MDC.get("trace_id")</span>를 안전하게 쓸 수 있는 이유가 이 설계 덕분입니다. 주석에도 "trace_id 생성 이후 실행"이라 명시해 의도가 명확합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">LogEvent 상수 클래스 — 구조화 로그</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>로그 이벤트 타입을 <span class="code-inline">LogEvent.LOAD_START</span>, <span class="code-inline">CIRCUIT_OPEN</span> 등 상수로 정의하고 AOP LogAspect와 GlobalExceptionHandler 모두에서 일관되게 사용합니다. 문자열 리터럴 오타 위험을 컴파일 타임에 제거하는 올바른 방식입니다.</p>
+<p><span class="code-inline">LogLevelPolicy.decideByException()</span>으로 예외 메시지 내용에 따라 WARN/ERROR를 자동 분기하는 정책화도 인상적입니다. 장애 로그의 노이즈를 줄이는 실질적 설계입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">CacheConfig — Primary Bean 충돌 위험</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">redisCacheManager</span>에 <span class="code-inline">@Primary</span>가 붙어 있고 <span class="code-inline">caffeineCacheManager</span>는 Secondary입니다. 이때 <span class="code-inline">@Cacheable</span> 어노테이션은 Primary인 Redis를 씁니다. 2-Tier 캐시를 의도했다면 실제로는 Redis만 동작합니다.</p>
+<p>주석에 컴포지트 캐시 매니저 코드가 주석 처리된 채로 남아 있습니다. README의 "L1 Caffeine → L2 Redis" 설명과 실제 동작이 불일치합니다. Caffeine을 실제 L1으로 쓰려면 <span class="code-inline">CompositeCacheManager</span>를 활성화하거나, 직접 <span class="code-inline">CacheManager</span> 체인을 구성해야 합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">LogLevelPolicy — 문자열 매칭 취약성</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">if (message.contains("CIRCUIT_OPEN"))</span> 방식은 예외 메시지가 변경되면 정책이 조용히 오작동합니다. 예외 타입 기반으로 전환하는 것이 더 안전합니다.</p>
+<div class="code-block"><span class="cmt">// 현재: 문자열 의존 (취약)</span>
+message.<span class="fn">contains</span>(<span class="str">"CIRCUIT_OPEN"</span>) → WARN
+
+<span class="cmt">// 개선: 예외 타입으로 분기</span>
+<span class="kw">if</span> (t <span class="kw">instanceof</span> <span class="cls">CallNotPermittedException</span>)
+  <span class="kw">return</span> <span class="cls">Level</span>.WARN;</div>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">SystemLog 엔티티 — 미완성 저장 로직</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">SystemLog</span> 엔티티와 <span class="code-inline">SystemLogRepository</span>가 선언되어 있지만 README에서도 명시하듯 실제 저장 로직이 <span class="code-inline">LogAspect</span>와 연결되지 않았습니다. 엔티티만 있고 쓰는 곳이 없어 사문화된 코드입니다.</p>
+<p>향후 계획으로 언급된 만큼 <span class="code-inline">// TODO: connect LogAspect → SystemLog</span> 주석이라도 명시해 코드 리딩 시 혼란을 방지하는 것이 좋습니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="proj-panel" id="panel-2">
+<div class="proj-header">
+<div class="proj-header-left">
+<span class="proj-tag tag-kotlin">Kotlin JVM Collector · Spring Boot Test API</span>
+<h2 class="proj-name">k6 REALTIME METRICS PIPELINE</h2>
+<p class="proj-desc">
+          k6 부하 테스트 메트릭을 Kafka로 스트리밍하고, 순수 Kotlin Collector가 InfluxDB v3에 적재한 뒤
+          Grafana로 실시간 시각화하는 파이프라인. 부하 경로와 메트릭 경로를 분리해
+          테스트 대상 API와 관측 파이프라인을 독립적으로 운영한다.
+        </p>
+<div class="stack-row">
+<span class="stack-badge">k6 + xk6-output-kafka</span>
+<span class="stack-badge">Apache Kafka</span>
+<span class="stack-badge">InfluxDB v3</span>
+<span class="stack-badge">Grafana</span>
+<span class="stack-badge">Kotlin (JVM)</span>
+<span class="stack-badge">Spring Boot (Test API)</span>
+<span class="stack-badge">Docker Compose</span>
+</div>
+<div class="review-basis">
+<span class="basis-badge">✦ Review Basis: Source Code (Collector + Test API) + README</span>
+<span class="basis-badge">Collector / Test API / Dashboard 설정 중심 리뷰</span>
+</div>
+</div>
+<div class="proj-meta">
+<div class="meta-item"><span class="meta-dot dot-green"></span>Kafka → Collector → InfluxDB 파이프라인</div>
+<div class="meta-item"><span class="meta-dot dot-purple"></span>Batch write + Exponential Backoff</div>
+<div class="meta-item"><span class="meta-dot dot-orange"></span>Dead-letter 파일 기반 실패 격리</div>
+<div class="meta-item"><span class="meta-dot dot-yellow"></span>CollectorMetrics (TPS / buffer / flush 추적)</div>
+<div class="meta-item"><span class="meta-dot dot-green"></span>Shutdown Hook 기반 잔여 버퍼 flush</div>
+</div>
+</div>
+<div class="full-card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>파이프라인 흐름</div>
+<div class="arch-flow">
+<span class="arch-node highlight-o">k6 (Load)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-p">Kafka Topic<br/>k6-metrics</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">KafkaConsumer<br/>(poll loop)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">MetricsProcessor<br/>(JSON → LP)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">InfluxWriter<br/>(buffer+batch)</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-y">InfluxDB v3</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node">Grafana</span>
+</div>
+<div style="margin-top:12px; font-size:12px; color:var(--muted); display:flex; gap:24px;">
+<span>• write 실패 → Dead-letter 파일 기록</span>
+<span>• 4xx (401/403/400) → 즉시 포기 (재시도 불필요)</span>
+<span>• batch 성공 후에만 Kafka offset commit</span>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>핵심 코드 — InfluxWriter batch flush</div>
+<div class="code-block"><span class="cmt">// batch-size 도달 OR flush interval 경과 시 flush</span>
+<span class="kw">fun</span> <span class="fn">add</span>(line: <span class="cls">String</span>): <span class="cls">Boolean</span> {
+  buffer += line
+  metrics.bufferSize = buffer.size
+  <span class="kw">return if</span> (buffer.size &gt;= config.batchSize)
+    <span class="fn">flush</span>()
+  <span class="kw">else true</span>
+}
+
+<span class="kw">fun</span> <span class="fn">flushIfDue</span>(): <span class="cls">Boolean</span> {
+  <span class="kw">val</span> elapsed = <span class="cls">System</span>.currentTimeMillis() - lastFlushAt
+  <span class="kw">return if</span> (buffer.isNotEmpty()
+      &amp;&amp; elapsed &gt;= config.flushIntervalMs)
+    <span class="fn">flush</span>()
+  <span class="kw">else true</span>
+}</div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>핵심 코드 — Retry + 4xx 즉시 포기</div>
+<div class="code-block"><span class="cmt">// 4xx 중 재시도해도 무의미한 케이스 즉시 포기</span>
+<span class="kw">if</span> (status <span class="kw">in</span> <span class="fn">listOf</span>(
+    <span class="cls">HTTP_BAD_REQUEST</span>,     <span class="cmt">// 400</span>
+<span class="cls">HTTP_UNAUTHORIZED</span>,    <span class="cmt">// 401</span>
+<span class="cls">HTTP_FORBIDDEN</span> <span class="cmt">// 403</span>
+)) { <span class="kw">return false</span> }  <span class="cmt">// 즉시 포기</span>
+<span class="cmt">// 그 외 → Exponential Backoff</span>
+<span class="kw">val</span> waitMs = <span class="num">1000.0</span> * <span class="num">2.0</span>.<span class="fn">pow</span>(attempt.<span class="fn">toDouble</span>())
+<span class="cmt">// 1s → 2s → 4s ...</span>
+<span class="cls">Thread</span>.<span class="fn">sleep</span>(waitMs.<span class="fn">toLong</span>())</div>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-yellow"></span>핵심 코드 — MetricsProcessor URL 정규화</div>
+<div class="code-block"><span class="cmt">// URL 쿼리스트링 제거 → cardinality 폭발 방지</span>
+<span class="kw">private fun</span> <span class="fn">normalizeUrl</span>(rawUrl: <span class="cls">String</span>): <span class="cls">String</span> {
+  <span class="kw">return try</span> {
+    <span class="kw">val</span> uri = <span class="cls">URI</span>(rawUrl)
+    <span class="kw">val</span> path = uri.path ?: rawUrl
+    <span class="kw">if</span> (path.isBlank()) rawUrl <span class="kw">else</span> path
+  } <span class="kw">catch</span> (_: <span class="cls">Exception</span>) {
+    rawUrl.<span class="fn">substringBefore</span>(<span class="str">"?"</span>)
+  }
+}
+<span class="cmt">// NaN / Infinity는 Influx에 넣지 않음</span>
+<span class="kw">if</span> (!value.<span class="fn">isFinite</span>()) <span class="kw">return null</span></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-red"></span>핵심 코드 — ConfigLoader 환경변수 치환</div>
+<div class="code-block"><span class="cmt">// application.yml → ${KEY} → env/system 치환</span>
+<span class="kw">private val</span> placeholderRegex =
+  <span class="cls">Regex</span>(<span class="str">"""\$\{([A-Z0-9_]+)}"""</span>)
+
+<span class="kw">private fun</span> <span class="fn">replacePlaceholders</span>(
+    yamlTemplate: <span class="cls">String</span>,
+    envMap: <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">String</span>&gt;
+): <span class="cls">String</span> {
+  <span class="kw">return</span> placeholderRegex.<span class="fn">replace</span>(yamlTemplate) { m -&gt;
+    <span class="kw">val</span> key = m.groupValues[<span class="num">1</span>]
+    envMap[key] ?: <span class="kw">throw</span> <span class="cls">IllegalStateException</span>(
+      <span class="str">"Missing config for placeholder: $key"</span>)
+  }
+}</div>
+</div>
+</div>
+<div class="full-card" style="margin-top:0;">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰</div>
+<div class="review-block">
+<div class="review-item open">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">Kafka offset commit 전략 — at-least-once 보장</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">ENABLE_AUTO_COMMIT_CONFIG = "false"</span>로 자동 커밋을 끄고, batch 전체 성공 시에만 <span class="code-inline">consumer.commitSync()</span>를 호출합니다. write 실패 시 커밋을 생략해 Kafka가 같은 메시지를 다시 전달하게 만드는 at-least-once 보장 패턴을 정확하게 구현했습니다.</p>
+<p>특히 <span class="code-inline">allSucceeded = false</span>로 하나의 실패가 전체 batch commit을 막는 구조는 부분 성공 / 부분 유실 시나리오를 원천 차단합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">Shutdown Hook — 잔여 버퍼 손실 방지</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>SIGTERM 수신 시 <span class="code-inline">writer.flush()</span>와 <span class="code-inline">writer.writeCollectorStats()</span>를 호출해 메모리 버퍼의 미전송 데이터를 최대한 보존합니다. 배포/재시작 시 메트릭 손실을 최소화하는 운영 관점에서 세심한 처리입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">400/401/403 즉시 포기 — 재시도 낭비 방지</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>400/401/403 응답은 재시도해도 동일하게 실패합니다. 이 케이스를 명시적으로 <span class="code-inline">return false</span>로 즉시 포기 처리해 exponential backoff 대기 시간 낭비와 Kafka lag 증가를 방지한 설계가 실용적입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">InfluxWriter — Thread-safety 미보장</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">InfluxWriter</span>의 <span class="code-inline">buffer</span>(<span class="code-inline">mutableListOf</span>)와 <span class="code-inline">lastFlushAt</span>은 동기화 없이 공유됩니다. 현재 단일 스레드(KafkaConsumer.run()) 구조에서는 문제 없지만, 향후 멀티 파티션 병렬 처리 등으로 확장 시 레이스 컨디션이 발생할 수 있습니다.</p>
+<p>Kotlin의 <span class="code-inline">@Synchronized</span> 어노테이션이나 <span class="code-inline">java.util.concurrent.CopyOnWriteArrayList</span>로 방어하거나, 단일 스레드 전제임을 명시적 주석으로 문서화하는 것을 권장합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">Blocking retry — Kafka poll 차단</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">Thread.sleep(waitMs)</span> 방식의 동기 retry는 KafkaConsumer 루프 전체를 블로킹합니다. 최대 3회 재시도(1s+2s+4s = 7초)동안 Kafka에서 새 메시지를 수신할 수 없어 consumer lag가 쌓입니다.</p>
+<p>비동기 처리(코루틴 또는 별도 스레드풀)나 최소한 retry 횟수 축소, 혹은 실패 즉시 dead-letter 처리 후 계속 consume하는 전략을 고려할 수 있습니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">kafkaLag = 0 하드코딩</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">CollectorMetrics.kafkaLag</span>이 <span class="code-inline">0</span>으로 고정되어 Grafana에 노출되는 Collector Stats의 <span class="code-inline">kafka_lag</span> 값이 의미 없습니다. 파이프라인 병목 진단에 핵심 지표인 만큼 <span class="code-inline">AdminClient</span>로 실제 lag을 조회하거나, 0임을 대시보드에서 명시하는 처리가 필요합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="proj-panel" id="panel-3">
+<div class="proj-header">
+<div class="proj-header-left">
+<span class="proj-tag tag-infra">DevOps · Infrastructure</span>
+<h2 class="proj-name">SELF-HOSTED DEVOPS PLATFORM</h2>
+<p class="proj-desc">
+          Intel N100 Mini PC (16GB / 4C4T) 위에 WSL2 + Docker Desktop으로
+          GitLab + Runner + Nginx + Prometheus/Grafana 스택을 구축한 온프레미스 DevOps 플랫폼.
+          GitHub Actions self-hosted runner로 초기 배포를 자동화하고, 이후 GitLab CI/CD로 전환하는
+          Two-stage 배포 구조를 구현했다.
+        </p>
+<div class="stack-row">
+<span class="stack-badge">GitLab Omnibus</span>
+<span class="stack-badge">GitLab Runner</span>
+<span class="stack-badge">GitHub Actions</span>
+<span class="stack-badge">Docker Compose</span>
+<span class="stack-badge">Nginx</span>
+<span class="stack-badge">Prometheus</span>
+<span class="stack-badge">Grafana</span>
+<span class="stack-badge">WSL2 Ubuntu</span>
+</div>
+<div class="review-basis">
+<span class="basis-badge">✦ Review Basis: Workflow YAML + Compose + GitLab CI + README</span>
+<span class="basis-badge">Compose / Workflow / CI 설정 중심 리뷰</span>
+</div>
+</div>
+<div class="proj-meta">
+<div class="meta-item"><span class="meta-dot dot-green"></span>GitHub Actions → Mini PC self-hosted runner</div>
+<div class="meta-item"><span class="meta-dot dot-purple"></span>GitLab Docker Executor 기반 CI/CD</div>
+<div class="meta-item"><span class="meta-dot dot-orange"></span>Nginx SSL Reverse Proxy</div>
+<div class="meta-item"><span class="meta-dot dot-yellow"></span>Prometheus / Grafana Monitoring</div>
+<div class="meta-item"><span class="meta-dot dot-green"></span>Backup / Restore Runbook 기준</div>
+</div>
+</div>
+<div class="full-card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>배포 흐름</div>
+<div class="arch-flow">
+<span class="arch-node">Main PC<br/>코드 푸시</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-p">GitHub<br/>Repository</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-p">GitHub Actions</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">Mini PC<br/>self-hosted runner</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-g">Docker Compose<br/>실행</span>
+<span class="arch-arrow">→</span>
+<span class="arch-node highlight-y">GitLab<br/>+ Nginx<br/>+ Monitoring</span>
+</div>
+<div style="margin-top:12px; font-size:12px; color:var(--muted);">
+        GitHub-hosted runner는 사설 IP의 Mini PC에 직접 접근 불가 → WSL2에 self-hosted runner 등록해 우회
+      </div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>GitHub Actions — 핵심 deploy-gitlab.yml</div>
+<div class="code-block"><span class="cmt"># WSL2 Mini PC에 등록한 self-hosted runner에서만 실행</span>
+<span class="kw">runs-on</span>: <span class="str">self-hosted</span>
+<span class="cmt"># Nginx runtime 파일 고정 경로로 복사 + SSL 자체서명 인증서 자동 생성</span>
+- <span class="kw">name</span>: <span class="str">Prepare Nginx runtime files</span>
+<span class="kw">run</span>: |
+    <span class="fn">cp</span> nginx/nginx.conf /home/gali/nginx/nginx.conf
+    <span class="fn">cp</span> nginx/conf.d/gitlab.conf /home/gali/nginx/conf.d/
+    <span class="kw">if</span> [ ! -f /home/gali/nginx/ssl/gitlab.local.crt ]; <span class="kw">then</span>
+<span class="fn">openssl req</span> -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /home/gali/nginx/ssl/gitlab.local.key \
+        -out /home/gali/nginx/ssl/gitlab.local.crt \
+        -subj <span class="str">"/CN=gitlab.local"</span>
+<span class="kw">fi</span>
+<span class="cmt"># GitLab + Nginx / Monitoring 별도 compose로 분리 배포</span>
+- <span class="kw">name</span>: <span class="str">Deploy GitLab and Nginx containers</span>
+<span class="kw">env</span>:
+    MINI_PC_HOST: <span class="str">${{ secrets.MINI_PC_HOST }}</span>
+<span class="kw">run</span>: |
+    <span class="fn">docker compose</span> \
+      -f infra/compose/docker-compose.gitlab.yml \
+      up -d --remove-orphans
+
+- <span class="kw">name</span>: <span class="str">Deploy Monitoring containers</span>
+<span class="kw">run</span>: |
+    <span class="fn">docker compose</span> -p monitoring \
+      -f infra/compose/docker-compose.monitoring.yml \
+      up -d --remove-orphans</div>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>GitLab CI — .gitlab-ci.yml</div>
+<div class="code-block"><span class="cmt"># validate → deploy-check 2단계 구성</span>
+<span class="kw">stages</span>:
+  - <span class="str">validate</span>
+  - <span class="str">deploy-check</span>
+<span class="cmt"># Runner 태그 전역 지정 (docker + mini-pc + wsl2)</span>
+<span class="kw">default</span>:
+  <span class="kw">tags</span>: [<span class="str">docker</span>, <span class="str">mini-pc</span>, <span class="str">wsl2</span>]
+
+<span class="fn">validate-compose</span>:
+  <span class="kw">stage</span>: <span class="str">validate</span>
+<span class="kw">image</span>: <span class="str">docker:26-cli</span>
+<span class="kw">script</span>:
+    - <span class="fn">docker version</span>
+<span class="cmt"># compose 파일 문법 + 환경변수 치환 검증</span>
+    - <span class="fn">docker compose</span> \
+        -f infra/compose/docker-compose.gitlab.yml config
+
+<span class="fn">deploy-readiness-check</span>:
+  <span class="kw">stage</span>: <span class="str">deploy-check</span>
+<span class="kw">image</span>: <span class="str">alpine:3.20</span>
+<span class="kw">script</span>:
+    - <span class="fn">echo</span> <span class="str">"Deploy readiness check"</span>
+    - <span class="fn">uname</span> -a
+    <span class="cmt"># 배포 대상 compose 파일 존재 여부 확인</span>
+    - <span class="fn">test</span> -f infra/compose/docker-compose.gitlab.yml</div>
+</div>
+</div>
+<div class="full-card" style="margin-top:0;">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>코드 리뷰 (인프라 / 설정 파일 기준)</div>
+<div class="review-block">
+<div class="review-item open">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">GitHub-hosted runner 우회 설계 — 현실적 제약 해결</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>공용 인터넷에서 사설 IP의 Mini PC에 직접 SSH하는 것은 불가능합니다. WSL2에 GitHub self-hosted runner를 등록해 GitHub Actions job을 Mini PC가 직접 pull하는 방식으로 이 제약을 깔끔하게 해결했습니다.</p>
+<p>이 패턴은 기업 온프레미스 배포에서도 동일하게 사용되는 표준 접근법입니다. 제약을 우회하는 설계 결정을 README에 명확히 기술한 점도 좋습니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">runtime 경로 / repository 경로 분리</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>Repository의 <span class="code-inline">gitlab/</span>은 placeholder로만 유지하고, 실제 GitLab 운영 데이터는 <span class="code-inline">/home/gali/gitlab/</span> 고정 경로에 분리 보관합니다. Git push/pull에 GitLab 데이터가 포함되거나 CI workspace가 overwrite하는 사고를 방지하는 올바른 구조입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-good">✓</div>
+<span class="review-title">Grafana Provisioning — 대시보드 코드화</span>
+<span class="review-badge badge-good">잘된 점</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>Grafana datasource와 dashboard를 <span class="code-inline">provisioning/</span> YAML + JSON으로 코드화해 컨테이너 재생성 시에도 대시보드가 자동 복원됩니다. "클릭해서 설정한 것은 재현 불가"의 운영 안티패턴을 피한 설계입니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">Monitoring image tag — latest 고정으로 재현성 저하</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">MINI_PC_HOST</span>는 GitHub Secrets로 주입해 workflow에 민감값 하드코딩을 방지했습니다. 반면 <span class="code-inline">docker-compose.monitoring.yml</span>의 <span class="code-inline">prom/prometheus:latest</span>, <span class="code-inline">grafana/grafana:latest</span>는 버전이 고정되지 않아 예상치 못한 업스트림 업데이트에 영향을 받을 수 있습니다.</p>
+<p>운영 재현성을 위해 <span class="code-inline">prom/prometheus:v2.52.0</span>, <span class="code-inline">grafana/grafana:11.0.0</span>처럼 specific tag로 고정하는 것을 권장합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">N100 경량화 — 이미 튜닝됨, 추가 개선 방향</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p>GitLab Omnibus가 N100 16GB 환경에서 무겁다는 점을 인식하고, 이미 compose 환경변수로 <span class="code-inline">puma['worker_processes'] = 1</span>, <span class="code-inline">sidekiq['concurrency'] = 5</span>, <span class="code-inline">postgresql['shared_buffers'] = "256MB"</span>를 적용해 경량화했습니다.</p>
+<p>추가 개선 방향으로는 Prometheus <span class="code-inline">scrape_interval</span> 조정(현재 default 15s → 60s로 늘려 메모리 부담 감소), Monitoring image tag 버전 고정, GitLab 자동 백업 스케줄 구성(<span class="code-inline">gitlab_rails['backup_keep_time']</span>) 등이 적합합니다.</p>
+</div>
+</div>
+<div class="review-item">
+<div class="review-header" onclick="toggleReview(this)">
+<div class="review-icon icon-warn">!</div>
+<span class="review-title">docker-compose.full.yml — 0 bytes 미사용 파일</span>
+<span class="review-badge badge-warn">개선 포인트</span>
+<span class="review-chevron">▾</span>
+</div>
+<div class="review-body">
+<p><span class="code-inline">docker-compose.full.yml</span>이 0 bytes 빈 파일 상태입니다. 실제 배포 workflow에서는 이 파일을 참조하지 않으며, <span class="code-inline">docker-compose.gitlab.yml</span>과 <span class="code-inline">docker-compose.monitoring.yml</span>을 별도로 사용합니다.</p>
+<p>사용하지 않는 빈 파일이 디렉토리에 남아 있으면 코드 리딩 시 혼란을 줍니다. 삭제하거나 README에서 미사용 파일임을 명시하는 처리가 필요합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ════ PANEL 1: Circuit Breaker ════ -->
+<!-- end panel-0 -->
+<!-- ════ PANEL 2: k6 Metrics Pipeline ════ -->
+<!-- end panel-1 -->
+<!-- ════ PANEL 3: Server Monitor ════ -->
+<!-- end panel-2 -->
+<!-- ════ PANEL 4: Self-Hosted DevOps ════ -->
+<!-- end panel-3 -->
+</main>
+<!-- ── SUMMARY ── -->
+<section id="summary" style="max-width:1280px; margin:0 auto; padding:2rem 2rem 4rem;">
+<p class="section-label">Cross-Project Summary</p>
+<div class="stats-row">
+<div class="stat-card">
+<span class="stat-num" style="color:var(--accent2)">4</span>
+<span class="stat-label">Projects Reviewed</span>
+</div>
+<div class="stat-card">
+<span class="stat-num" style="color:var(--accent1)">3</span>
+<span class="stat-label">Languages</span>
+</div>
+<div class="stat-card">
+<span class="stat-num" style="color:var(--accent4)">12</span>
+<span class="stat-label">Strengths · 잘된 점</span>
+</div>
+<div class="stat-card">
+<span class="stat-num" style="color:var(--accent3)">11</span>
+<span class="stat-label">Improvements · 개선 포인트</span>
+</div>
+</div>
+<div class="content-grid">
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-green"></span>공통 강점</div>
+<ul class="review-list">
+<li><span class="li-bullet"></span><span><span>관측성(Observability) 일관 적용</span> — trace_id, Prometheus 메트릭, structured log를 모든 프로젝트에서 설계 단계부터 고려</span></li>
+<li><span class="li-bullet"></span><span><span>실패 격리 패턴 숙지</span> — CircuitBreaker, at-least-once Kafka commit, MongoDB fallback, Dead-letter 등 장애를 조용히 삼키지 않는 구조</span></li>
+<li><span class="li-bullet"></span><span><span>보안 외부화 일관성</span> — Vault KV, GitHub Secrets, Ansible Vault로 하드코딩 없이 자격증명 관리</span></li>
+<li><span class="li-bullet"></span><span><span>Lock-free / 동시성 의식</span> — CAS 기반 AtomicBoolean, Caffeine 캐시, ConcurrentLinkedDeque 등 동시성 자료구조 적절 활용</span></li>
+<li><span class="li-bullet"></span><span><span>문서화 수준</span> — README + 별도 docs/ 구조, 아키텍처 다이어그램, 불변식 명시 등 재현 가능한 문서화</span></li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title"><span class="card-title-dot dot-bar-yellow"></span>공통 개선 포인트</div>
+<ul class="review-list">
+<li><span class="li-bullet"></span><span><span>설계 문서 ↔ 실제 코드 불일치</span> — 2-Tier 캐시 미완성, kafka_lag = 0, 빈 compose 파일 등 README와 코드 간 갭 존재</span></li>
+<li><span class="li-bullet"></span><span><span>Blocking retry</span> — Kotlin Collector의 <code style="font-family:var(--mono);font-size:11px;background:var(--surface3);padding:1px 5px;border-radius:3px;">Thread.sleep</code> 기반 retry는 Kafka consume loop를 최대 7초 차단할 수 있음</span></li>
+<li><span class="li-bullet"></span><span><span>Worker thread 점유</span> — FastAPI sync endpoint 내 <code style="font-family:var(--mono);font-size:11px;background:var(--surface3);padding:1px 5px;border-radius:3px;">time.sleep(0.1)</code>이 동시 요청 증가 시 threadpool 소진으로 이어질 수 있음</span></li>
+<li><span class="li-bullet"></span><span><span>테스트 코드 부재</span> — 4개 프로젝트 모두 비즈니스 로직 단위 테스트 없거나 ApplicationTests만 존재. LogLevelPolicy, analyze_process 등 순수 함수 구조임에도 미작성</span></li>
+</ul>
+</div>
+</div>
+<!-- 공통 개선 패턴 -->
+<div class="full-card" style="margin-top:12px;">
+<div class="card-title"><span class="card-title-dot dot-bar-purple"></span>공통 개선 패턴 — 3가지 축</div>
+<div class="content-grid three" style="margin-top:0.5rem; margin-bottom:0;">
+<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
+<div style="font-family:var(--mono); font-size:10px; color:var(--accent1); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 01 · 문서 ↔ 코드 일치</div>
+<ul class="review-list" style="font-size:12px;">
+<li><span class="li-bullet"></span><span>CB — CacheConfig: @Primary Redis만 동작, Caffeine L1 미완성</span></li>
+<li><span class="li-bullet"></span><span>k6 — kafkaLag = 0 placeholder, 실제 수집 미연결</span></li>
+<li><span class="li-bullet"></span><span>DevOps — docker-compose.full.yml 0 bytes 미사용</span></li>
+</ul>
+</div>
+<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
+<div style="font-family:var(--mono); font-size:10px; color:var(--accent2); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 02 · 운영 재현성 강화</div>
+<ul class="review-list" style="font-size:12px;">
+<li><span class="li-bullet"></span><span>DevOps — Monitoring image tag latest → 버전 고정 필요</span></li>
+<li><span class="li-bullet"></span><span>Server Monitor — on_event deprecated → lifespan 전환</span></li>
+<li><span class="li-bullet"></span><span>DevOps — Backup Runbook 문서 → 자동화 스크립트로 발전</span></li>
+</ul>
+</div>
+<div style="background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:1.2rem;">
+<div style="font-family:var(--mono); font-size:10px; color:var(--accent4); letter-spacing:0.1em; margin-bottom:0.75rem; text-transform:uppercase;">Pattern 03 · 진단 지표 실제화</div>
+<ul class="review-list" style="font-size:12px;">
+<li><span class="li-bullet"></span><span>k6 — kafkaLag AdminClient로 실제 lag 수집</span></li>
+<li><span class="li-bullet"></span><span>CB — SystemLog 저장 로직 LogAspect와 연결</span></li>
+<li><span class="li-bullet"></span><span>CB — LogLevelPolicy 문자열 → 예외 타입 기반 분기</span></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<span>Generated for presentation · 2026 · 4 Projects · Java · Kotlin · Python · DevOps</span>
+</footer>
+<script>
+function switchTab(idx) {
+  document.querySelectorAll('.proj-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.proj-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === idx);
+  });
+}
+
+function toggleReview(header) {
+  const item = header.closest('.review-item');
+  item.classList.toggle('open');
+}
+
+// Nav active on scroll
+const sections = ['projects','review','summary'];
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 80;
+  let active = 'projects';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= y) active = id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+});
+</script>
+</body>
+</html>
